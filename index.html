@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kel-bek</title>
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:10px;background:#e8edf5;color:#111827;font-family:Tahoma,Arial,sans-serif}
+.app{max-width:100%;margin:0 auto;background:#fff;border-radius:18px;padding:12px;box-shadow:0 8px 28px rgba(0,0,0,.14)}
+.top{background:#0f172a;color:#fff;border-radius:16px;padding:14px;text-align:center;margin-bottom:10px}
+.top h1{margin:0;font-size:30px;letter-spacing:1px;direction:ltr;font-weight:900}
+.top div{margin-top:5px;font-size:14px;color:#d1d5db;font-weight:bold}
+.account-tools{display:grid;grid-template-columns:1fr 170px;gap:8px;margin-bottom:10px}
+.open-accounts{border:1px solid #cbd5e1;background:#f8fafc;border-radius:14px;padding:8px;overflow-x:auto;white-space:nowrap;min-height:52px}
+.person-chip{display:inline-block;margin:2px 3px;padding:9px 12px;border-radius:999px;background:#e0f2fe;border:1px solid #38bdf8;color:#0f172a;font-size:14px;font-weight:900;cursor:pointer}
+.person-chip.active{background:#0f172a;color:white;border-color:#0f172a}
+.list-btn{border:0;border-radius:14px;background:#2563eb;color:white;font-weight:900;font-size:14px;padding:10px;cursor:pointer}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.field label{display:block;font-size:14px;font-weight:900;margin-bottom:4px;color:#0f172a}
+input{width:100%;padding:10px;border:1px solid #94a3b8;border-radius:9px;font-size:15px;font-weight:800;color:#111827;background:#f8fafc;font-family:Tahoma,Arial,sans-serif}
+input.num{direction:ltr;text-align:left;font-family:Arial,sans-serif;font-weight:900}
+input.readonly-name{background:#e5e7eb;color:#111827}
+.row-count{display:grid;grid-template-columns:1fr 120px;gap:8px;align-items:end;margin-bottom:10px}
+.table-wrap{width:100%;overflow-x:auto;border:1px solid #94a3b8;border-radius:14px;background:white;margin-top:10px}
+table{border-collapse:collapse;min-width:1200px;width:1200px;direction:rtl;table-layout:fixed}
+.pay-table{min-width:620px;width:620px}
+th,td{border:1px solid #94a3b8;padding:7px;text-align:center;vertical-align:middle;font-size:14px;font-weight:900;white-space:nowrap;color:#111827}
+th{background:#0f172a;color:white;position:sticky;top:0;z-index:1;font-size:14px;font-weight:900}
+td input{padding:8px;border-radius:7px;font-size:14px;height:38px;font-weight:900}
+.col-row{width:70px}.col-product{width:170px}.col-money{width:135px}.col-percent{width:105px}.col-date{width:135px}
+.row-no{font-family:Arial,sans-serif;font-weight:900;font-size:16px;direction:ltr;color:#0f172a}
+.calc-cell{direction:ltr;font-family:Arial,sans-serif;font-weight:900;font-size:14px;color:#111827;display:inline-block}
+.sum-row td{background:#4b5563;color:#fff;font-weight:900;font-size:15px}
+.sum-row .calc-cell{color:#fff}
+.sum-row .add-cell{background:#dcfce7!important;color:#166534!important}
+.toman-row td{background:#e5e7eb;color:#111827;font-weight:900;font-size:14px}
+.toman-row .calc-cell{color:#111827}
+.add-cell{background:#dcfce7!important;color:#166534!important;cursor:pointer;font-weight:900;user-select:none}
+.pay-row td{background:#fef3c7;color:#111827;font-weight:900}
+.pay-row input{background:#fffbeb;border-color:#d97706;color:#111827}
+.remain-row td{background:#374151;color:#fff;font-weight:900}
+.remain-row .calc-cell{color:#fff}
+.section-title{margin-top:14px;padding:10px;border-radius:12px;background:#0f172a;color:white;font-weight:900;text-align:center}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+button{border:0;border-radius:12px;padding:12px;font-size:16px;font-weight:900;cursor:pointer}
+.save{background:#15803d;color:white}.new{background:#0f766e;color:white}.clear{background:#b91c1c;color:white}
+.note{margin-top:10px;font-size:13px;color:#475569;line-height:1.8;text-align:center;font-weight:bold}
+.modal{display:none;position:fixed;z-index:10;inset:0;background:rgba(15,23,42,.55);padding:12px}
+.modal-box{background:white;border-radius:18px;padding:12px;max-width:780px;margin:18px auto;max-height:88vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.modal-head{display:grid;grid-template-columns:1fr 90px;gap:8px;align-items:center;margin-bottom:10px}
+.modal-head h2{margin:0;font-size:20px;color:#0f172a}
+.buyer-row{border-radius:12px;padding:10px;margin:7px 0;border:1px solid #cbd5e1;cursor:pointer;font-weight:900;line-height:1.8}
+.paid-green{background:#dcfce7!important;color:#14532d!important;border-color:#16a34a!important}
+.remain-yellow{background:#fef08a!important;color:#713f12!important;border-color:#ca8a04!important}
+.remain-orange{background:#fdba74!important;color:#7c2d12!important;border-color:#ea580c!important}
+.paid-red{background:#fca5a5!important;color:#7f1d1d!important;border-color:#dc2626!important}
+.no-pay-maroon{background:#7f1d1d!important;color:white!important;border-color:#450a0a!important}
+.normal-blue{background:#dbeafe!important;color:#1e3a8a!important;border-color:#2563eb!important}
+.buyer-amounts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:4px;direction:rtl}
+.amount-box{background:rgba(255,255,255,.72);border-radius:8px;padding:5px;font-size:12px}
+.no-pay-maroon .amount-box{background:rgba(255,255,255,.15)}
+@media(max-width:600px){.account-tools{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr 1fr}.buttons{grid-template-columns:1fr}.buyer-amounts{grid-template-columns:1fr}}
+
+.data-tools{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+  padding:10px;
+  border-radius:14px;
+  background:#eef2ff;
+  border:1px solid #c7d2fe;
+}
+.backup-btn{background:#1d4ed8;color:white}
+.restore-btn{background:#7c3aed;color:white}
+.hidden-file{display:none}
+.security-note{
+  margin-top:8px;
+  padding:9px;
+  border-radius:12px;
+  background:#ecfdf5;
+  border:1px solid #86efac;
+  color:#14532d;
+  font-size:13px;
+  font-weight:900;
+  line-height:1.8;
+  text-align:center;
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><h1>Kel-bek</h1><div>دفتر خرید، درصد سود، پرداخت‌های چندمرحله‌ای و مانده بدهی</div></div>
+
+  <div class="account-tools">
+    <div class="open-accounts" id="openAccounts"></div>
+    <button class="list-btn" onclick="showBuyerList()">لیست کل خریداران</button>
+  </div>
+
+  <div class="info-grid">
+    <div class="field"><label>نام</label><input id="firstName" oninput="calculateAndSave()" placeholder="نام"></div>
+    <div class="field"><label>نام خانوادگی</label><input id="lastName" oninput="calculateAndSave()" placeholder="نام خانوادگی"></div>
+    <div class="field"><label>تاریخ خرید</label><input id="buyDate" class="num" type="date" onchange="calculateAndSave()"></div>
+    <div class="field"><label>تاریخ ارسال</label><input id="sendDate" class="num" type="date" onchange="calculateAndSave()"></div>
+    <div class="field"><label>قیمت هر 1 لیر به تومان</label><input id="rate" class="num" type="text" inputmode="decimal" oninput="calculateAndSave()" onkeyup="calculateAndSave()" onchange="calculateAndSave()" placeholder="3500"></div>
+    <div class="field"><label>حساب فعال</label><input id="activeAccountName" class="readonly-name" readonly placeholder="حساب جدید"></div>
+  </div>
+
+  <div class="row-count">
+    <div class="field"><label>تعداد ردیف فعال</label><input id="activeRows" class="num readonly-name" type="text" value="1" readonly></div>
+    <button class="save" onclick="addRow()">افزودن ردیف</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-row">ردیف</th>
+          <th class="col-product">نام کالا</th>
+          <th class="col-money">قیمت خرید<br>₺</th>
+          <th class="col-percent">درصد سود<br>%</th>
+          <th class="col-money">مبلغ سود<br>₺</th>
+          <th class="col-money">خرید + سود<br>₺</th>
+          <th class="col-date">تاریخ خرید</th>
+          <th class="col-date">تاریخ ارسال</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+      <tfoot>
+        <tr class="sum-row">
+          <td class="add-cell" onclick="addRow()">+ ردیف بعدی</td>
+          <td>جمع کل لیر</td>
+          <td><span id="sumBuy" class="calc-cell">₺ 0.00</span></td>
+          <td>---</td>
+          <td><span id="sumProfit" class="calc-cell">₺ 0.00</span></td>
+          <td><span id="sumBuyPlusProfit" class="calc-cell">₺ 0.00</span></td>
+          <td colspan="2">جمع کل فاکتور</td>
+        </tr>
+        <tr class="toman-row">
+          <td></td>
+          <td>معادل تومان</td>
+          <td><span id="sumBuyTo" class="calc-cell">0.00 To</span></td>
+          <td>---</td>
+          <td><span id="sumProfitTo" class="calc-cell">0.00 To</span></td>
+          <td><span id="sumBuyPlusProfitTo" class="calc-cell">0.00 To</span></td>
+          <td colspan="2">نرخ: <span id="rateUsed" class="calc-cell">0.00 To</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="section-title">پرداخت‌ها</div>
+  <div class="table-wrap">
+    <table class="pay-table">
+      <thead>
+        <tr>
+          <th style="width:80px">ردیف</th>
+          <th style="width:180px">مبلغ پرداخت‌شده ₺</th>
+          <th style="width:170px">تاریخ پرداخت</th>
+          <th style="width:190px">معادل تومان</th>
+        </tr>
+      </thead>
+      <tbody id="paymentsBody"></tbody>
+      <tfoot>
+        <tr class="pay-row">
+          <td class="add-cell" onclick="addPayment()">+ پرداخت بعدی</td>
+          <td>جمع پرداخت‌شده</td>
+          <td>---</td>
+          <td><span id="paidTotal" class="calc-cell">₺ 0.00</span></td>
+        </tr>
+        <tr class="toman-row">
+          <td></td>
+          <td>پرداخت‌شده تومان</td>
+          <td colspan="2"><span id="paidTo" class="calc-cell">0.00 To</span></td>
+        </tr>
+        <tr class="remain-row">
+          <td></td>
+          <td>مبلغ مانده</td>
+          <td colspan="2"><span id="remain" class="calc-cell">₺ 0.00</span></td>
+        </tr>
+        <tr class="toman-row">
+          <td></td>
+          <td>مانده تومان</td>
+          <td colspan="2"><span id="remainTo" class="calc-cell">0.00 To</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="buttons">
+    <button class="save" onclick="saveCurrentAccount(); alert('ذخیره شد')">ذخیره حساب</button>
+    <button class="new" onclick="newAccount()">باز کردن حساب جدید</button>
+    <button class="clear" onclick="deleteCurrentAccount()">حذف همین حساب</button>
+  </div>
+
+  <div class="data-tools">
+    <button class="backup-btn" onclick="downloadBackup()">Backup / خروجی امن</button>
+    <button class="restore-btn" onclick="document.getElementById('restoreFile').click()">Restore / بازیابی</button>
+    <input id="restoreFile" class="hidden-file" type="file" accept=".json,application/json" onchange="restoreBackupFile(this)">
+  </div>
+
+  <div class="security-note">
+    برای استفاده جدی: بعد از هر روز کاری یک Backup بگیرید و فایل آن را در iCloud / Google Drive / فلش / لپ‌تاپ نگه دارید.
+  </div>
+
+  <div class="note">
+    رنگ لیست خریداران: تسویه یا بدهی کمتر از 25% سبز، مانده 25 تا 49% زرد، مانده 50% به بالا نارنجی، پرداخت تا 15% قرمز، بدون پرداخت زرشکی تیره.
+  </div>
+</div>
+
+<div class="modal" id="buyerModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>لیست کل خریداران</h2><button class="clear" onclick="closeBuyerList()">بستن</button></div>
+    <div id="buyerList"></div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY="kelbek_accounts_pwa_v1";
+const OLD_KEYS=["kelbek_accounts_v8","kelbek_accounts_v7","kelbek_accounts_v6","kelbek_accounts_v5","kelbek_accounts_v4","kelbek_accounts_v3","kelbek_accounts_v2","kelbek_accounts_v1"];
+let db={currentId:null,accounts:{}};
+let activeRows=1;
+let rows=[];
+let payments=[];
+let isLoading=false;
+
+function newId(){return "acc_"+Date.now()+"_"+Math.floor(Math.random()*100000)}
+function emptyRow(i){return{no:i,product:"",buy:"",profitPercent:"",buyDateRow:"",sendDateRow:""}}
+function emptyPayment(i){return{no:i,amount:"",date:""}}
+
+function cleanNumberString(v){
+  let s=String(v||"");
+  const fa="۰۱۲۳۴۵۶۷۸۹", ar="٠١٢٣٤٥٦٧٨٩";
+  s=s.replace(/[۰-۹]/g,ch=>String(fa.indexOf(ch)));
+  s=s.replace(/[٠-٩]/g,ch=>String(ar.indexOf(ch)));
+  s=s.replace(/،/g,"").replace(/,/g,"").replace(/\s/g,"").replace(/₺/g,"").replace(/To/gi,"").replace(/تومان/g,"").replace(/لیر/g,"");
+  return s.replace(/[^\d.-]/g,"");
+}
+function toNumber(v){const n=Number(cleanNumberString(v));return isNaN(n)?0:n}
+function fmt(n){return Number(n||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function moneyLira(n){return "₺ "+fmt(n)}
+function moneyTo(n){return fmt(n)+" To"}
+function formatLiveInput(el){
+  const raw=cleanNumberString(el.value);
+  if(raw===""||raw==="-"||raw.endsWith("."))return;
+  const parts=raw.split(".");
+  let intPart=parts[0], decPart=parts.length>1?parts[1].slice(0,2):"";
+  if(intPart==="")intPart="0";
+  const formattedInt=Number(intPart).toLocaleString("en-US",{maximumFractionDigits:0});
+  el.value=parts.length>1?formattedInt+"."+decPart:formattedInt;
+}
+function formatFinalInput(el){if(el.value.trim()==="")return;el.value=fmt(toNumber(el.value))}
+function escapeHtml(value){return String(value||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;")}
+
+function defaultAccount(){return{firstName:"",lastName:"",buyDate:"",sendDate:"",rate:"",activeRows:1,rows:[emptyRow(1)],payments:[emptyPayment(1)]}}
+
+function normalizeAccount(acc){
+  if(!acc.rows)acc.rows=[emptyRow(1)];
+  if(!acc.activeRows)acc.activeRows=acc.rows.length||1;
+  while(acc.rows.length<acc.activeRows)acc.rows.push(emptyRow(acc.rows.length+1));
+  if(!acc.payments){
+    acc.payments=[];
+    if(acc.paid||acc.paidDate)acc.payments.push({no:1,amount:acc.paid||"",date:acc.paidDate||""});
+    if(!acc.payments.length)acc.payments.push(emptyPayment(1));
+  }
+  if(!acc.payments.length)acc.payments.push(emptyPayment(1));
+  return acc;
+}
+
+function loadDb(){
+  let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");
+  if(!saved||!saved.accounts){
+    for(const k of OLD_KEYS){
+      const old=JSON.parse(localStorage.getItem(k)||"null");
+      if(old&&old.accounts){saved=old;break}
+    }
+  }
+  if(saved&&saved.accounts){db=saved}else{const id=newId();db={currentId:id,accounts:{}};db.accounts[id]=defaultAccount()}
+  for(const id of Object.keys(db.accounts))db.accounts[id]=normalizeAccount(db.accounts[id]);
+  if(!db.currentId||!db.accounts[db.currentId])db.currentId=Object.keys(db.accounts)[0];
+  saveDb();
+  loadCurrentAccount();
+}
+function saveDb(){localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}
+function currentAccount(){
+  if(!db.currentId||!db.accounts[db.currentId]){const id=newId();db.currentId=id;db.accounts[id]=defaultAccount()}
+  return db.accounts[db.currentId];
+}
+function getDisplayName(acc){const name=((acc.firstName||"")+" "+(acc.lastName||"")).trim();return name||"حساب جدید"}
+
+function loadCurrentAccount(){
+  isLoading=true;
+  const acc=normalizeAccount(currentAccount());
+  activeRows=acc.activeRows||1;
+  rows=acc.rows||[emptyRow(1)];
+  payments=acc.payments||[emptyPayment(1)];
+  document.getElementById("firstName").value=acc.firstName||"";
+  document.getElementById("lastName").value=acc.lastName||"";
+  document.getElementById("buyDate").value=acc.buyDate||"";
+  document.getElementById("sendDate").value=acc.sendDate||"";
+  document.getElementById("rate").value=acc.rate||"";
+  document.getElementById("activeRows").value=activeRows;
+  renderRows();
+  renderPayments();
+  calculate();
+  renderOpenAccounts();
+  isLoading=false;
+}
+function saveCurrentAccount(){
+  if(isLoading)return;
+  const acc=currentAccount();
+  acc.firstName=document.getElementById("firstName").value;
+  acc.lastName=document.getElementById("lastName").value;
+  acc.buyDate=document.getElementById("buyDate").value;
+  acc.sendDate=document.getElementById("sendDate").value;
+  acc.rate=document.getElementById("rate").value;
+  acc.activeRows=activeRows;
+  acc.rows=rows;
+  acc.payments=payments;
+  saveDb();
+  renderOpenAccounts();
+}
+function newAccount(){saveCurrentAccount();const id=newId();db.currentId=id;db.accounts[id]=defaultAccount();saveDb();rows=[emptyRow(1)];payments=[emptyPayment(1)];activeRows=1;loadCurrentAccount();setTimeout(()=>document.getElementById("firstName").focus(),100)}
+function switchAccount(id){if(id===db.currentId)return;saveCurrentAccount();db.currentId=id;saveDb();loadCurrentAccount()}
+function deleteCurrentAccount(){
+  if(!confirm("همین حساب حذف شود؟"))return;
+  delete db.accounts[db.currentId];
+  const ids=Object.keys(db.accounts);
+  if(ids.length)db.currentId=ids[0];else{const id=newId();db.currentId=id;db.accounts[id]=defaultAccount()}
+  saveDb();loadCurrentAccount();
+}
+function renderOpenAccounts(){
+  const box=document.getElementById("openAccounts");box.innerHTML="";
+  Object.keys(db.accounts).forEach(id=>{
+    const span=document.createElement("span");
+    span.className="person-chip"+(id===db.currentId?" active":"");
+    span.textContent=getDisplayName(db.accounts[id]);
+    span.onclick=()=>switchAccount(id);
+    box.appendChild(span);
+  });
+  document.getElementById("activeAccountName").value=getDisplayName(currentAccount());
+}
+
+function renderRows(){
+  const tbody=document.getElementById("tbody");tbody.innerHTML="";
+  for(let i=0;i<activeRows;i++){
+    if(!rows[i])rows[i]=emptyRow(i+1);
+    rows[i].no=i+1;
+    const r=rows[i], buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
+    const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td class="row-no">${i+1}</td>
+      <td><input value="${escapeHtml(r.product)}" oninput="updateCell(${i},'product',this.value)"></td>
+      <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.buy)}" oninput="formatLiveInput(this);updateCell(${i},'buy',this.value)" onblur="formatFinalCell(${i},'buy',this)"></td>
+      <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.profitPercent)}" oninput="updateCell(${i},'profitPercent',this.value)" onblur="formatPercentCell(${i},this)"></td>
+      <td><span id="profitAmount_${i}" class="calc-cell">${moneyLira(profitAmount)}</span></td>
+      <td><span id="buyPlusProfit_${i}" class="calc-cell">${moneyLira(buyPlusProfit)}</span></td>
+      <td><input class="num" type="date" value="${escapeHtml(r.buyDateRow)}" oninput="updateCell(${i},'buyDateRow',this.value)"></td>
+      <td><input class="num" type="date" value="${escapeHtml(r.sendDateRow)}" oninput="updateCell(${i},'sendDateRow',this.value)"></td>`;
+    tbody.appendChild(tr);
+  }
+}
+function renderPayments(){
+  const tbody=document.getElementById("paymentsBody");tbody.innerHTML="";
+  if(!payments.length)payments.push(emptyPayment(1));
+  for(let i=0;i<payments.length;i++){
+    if(!payments[i])payments[i]=emptyPayment(i+1);
+    payments[i].no=i+1;
+    const p=payments[i];
+    const tr=document.createElement("tr");
+    tr.className="pay-row";
+    tr.innerHTML=`
+      <td class="row-no">${i+1}</td>
+      <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(p.amount)}" oninput="formatLiveInput(this);updatePayment(${i},'amount',this.value)" onblur="formatFinalPayment(${i},this)"></td>
+      <td><input class="num" type="date" value="${escapeHtml(p.date)}" oninput="updatePayment(${i},'date',this.value)"></td>
+      <td><span id="paymentTo_${i}" class="calc-cell">0.00 To</span></td>`;
+    tbody.appendChild(tr);
+  }
+}
+function updateCell(index,key,value){if(!rows[index])rows[index]=emptyRow(index+1);rows[index][key]=value;calculateAndSave()}
+function updatePayment(index,key,value){if(!payments[index])payments[index]=emptyPayment(index+1);payments[index][key]=value;calculateAndSave()}
+function formatFinalCell(index,key,el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));rows[index][key]=el.value;calculateAndSave()}}
+function formatPercentCell(index,el){if(el.value.trim()!==""){const n=toNumber(el.value);el.value=String(Number(n.toFixed(2))).replace(/\.00$/,"");rows[index].profitPercent=el.value;calculateAndSave()}}
+function formatFinalPayment(index,el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));payments[index].amount=el.value;calculateAndSave()}}
+function addRow(){activeRows+=1;if(activeRows>300)activeRows=300;while(rows.length<activeRows)rows.push(emptyRow(rows.length+1));document.getElementById("activeRows").value=activeRows;renderRows();calculateAndSave()}
+function addPayment(){payments.push(emptyPayment(payments.length+1));renderPayments();calculateAndSave()}
+
+function totalsFor(acc){
+  acc=normalizeAccount(acc);
+  let sumBuy=0,sumProfit=0,total=0;
+  const count=acc.activeRows||acc.rows.length||1;
+  for(let i=0;i<count;i++){
+    const r=acc.rows[i]||emptyRow(i+1), buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
+    const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
+    sumBuy+=buy;sumProfit+=profitAmount;total+=buyPlusProfit;
+  }
+  let paid=0;
+  (acc.payments||[]).forEach(p=>paid+=toNumber(p.amount));
+  const remain=total-paid, rate=toNumber(acc.rate);
+  return{sumBuy,sumProfit,total,paid,remain,rate,totalTo:total*rate,paidTo:paid*rate,remainTo:remain*rate};
+}
+
+function calculate(){
+  const acc=currentAccount();
+  acc.rows=rows;acc.payments=payments;acc.activeRows=activeRows;
+  acc.firstName=document.getElementById("firstName").value;acc.lastName=document.getElementById("lastName").value;acc.rate=document.getElementById("rate").value;
+  acc.buyDate=document.getElementById("buyDate").value;acc.sendDate=document.getElementById("sendDate").value;
+  let sumBuy=0,sumProfit=0,sumBuyPlusProfit=0;
+  for(let i=0;i<activeRows;i++){
+    const r=rows[i]||emptyRow(i+1), buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
+    const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
+    sumBuy+=buy;sumProfit+=profitAmount;sumBuyPlusProfit+=buyPlusProfit;
+    const pa=document.getElementById("profitAmount_"+i), bp=document.getElementById("buyPlusProfit_"+i);
+    if(pa)pa.textContent=moneyLira(profitAmount);
+    if(bp)bp.textContent=moneyLira(buyPlusProfit);
+  }
+  const rate=toNumber(document.getElementById("rate").value);
+  let paid=0;
+  payments.forEach((p,i)=>{
+    paid+=toNumber(p.amount);
+    const cell=document.getElementById("paymentTo_"+i);
+    if(cell)cell.textContent=moneyTo(toNumber(p.amount)*rate);
+  });
+  const remain=sumBuyPlusProfit-paid;
+  document.getElementById("sumBuy").textContent=moneyLira(sumBuy);
+  document.getElementById("sumProfit").textContent=moneyLira(sumProfit);
+  document.getElementById("sumBuyPlusProfit").textContent=moneyLira(sumBuyPlusProfit);
+  document.getElementById("sumBuyTo").textContent=moneyTo(sumBuy*rate);
+  document.getElementById("sumProfitTo").textContent=moneyTo(sumProfit*rate);
+  document.getElementById("sumBuyPlusProfitTo").textContent=moneyTo(sumBuyPlusProfit*rate);
+  document.getElementById("rateUsed").textContent=moneyTo(rate);
+  document.getElementById("paidTotal").textContent=moneyLira(paid);
+  document.getElementById("paidTo").textContent=moneyTo(paid*rate);
+  document.getElementById("remain").textContent=moneyLira(remain);
+  document.getElementById("remainTo").textContent=moneyTo(remain*rate);
+}
+function calculateAndSave(){calculate();saveCurrentAccount()}
+
+function statusClass(t){
+  const total = t.total;
+  const paid = t.paid;
+  const remain = t.remain;
+
+  if (total <= 0) return "normal-blue";
+
+  const remainPct = (remain / total) * 100;
+  const paidPct = (paid / total) * 100;
+
+  // 1) تسویه کامل یا اضافه پرداخت: سبز
+  if (remain <= 0) return "paid-green";
+
+  // 2) هیچ پرداختی انجام نشده: زرشکی تیره
+  if (paid <= 0) return "no-pay-maroon";
+
+  // 3) پرداخت خیلی کم، حدود 5 تا 15 درصد: قرمز
+  // برای اینکه از قلم نیفتد، هر پرداخت تا 15 درصد قرمز حساب می‌شود.
+  if (paidPct <= 15) return "paid-red";
+
+  // 4) اگر هنوز 50 درصد یا بیشتر مانده باشد: نارنجی
+  // این شامل حدود 50 تا 66 درصد و حتی بیشتر هم می‌شود.
+  if (remainPct >= 50) return "remain-orange";
+
+  // 5) اگر حدود 25 تا زیر 50 درصد مانده باشد: زرد
+  if (remainPct >= 25) return "remain-yellow";
+
+  // 6) بدهی کم، کمتر از 25 درصد مانده: سبز روشن
+  return "paid-green";
+}
+function showBuyerList(){
+  saveCurrentAccount();
+  const list=document.getElementById("buyerList");list.innerHTML="";
+  const ids=Object.keys(db.accounts);
+  if(!ids.length)list.innerHTML="هیچ خریداری ثبت نشده است.";
+  ids.forEach(id=>{
+    const acc=db.accounts[id], t=totalsFor(acc);
+    const div=document.createElement("div");
+    div.className="buyer-row "+statusClass(t);
+    div.onclick=()=>{closeBuyerList();switchAccount(id)};
+    const paidPct = t.total > 0 ? (t.paid / t.total) * 100 : 0;
+    const remainPct = t.total > 0 ? (t.remain / t.total) * 100 : 0;
+    div.innerHTML=`
+      <div>${escapeHtml(getDisplayName(acc))}</div>
+      <div class="buyer-amounts">
+        <div class="amount-box">پرداخت‌شده: <span class="calc-cell">${moneyLira(t.paid)}</span><br><span class="calc-cell">${moneyTo(t.paidTo)}</span><br><span class="calc-cell">${fmt(paidPct)}%</span></div>
+        <div class="amount-box">مانده: <span class="calc-cell">${moneyLira(t.remain)}</span><br><span class="calc-cell">${moneyTo(t.remainTo)}</span><br><span class="calc-cell">${fmt(remainPct)}%</span></div>
+        <div class="amount-box">کل: <span class="calc-cell">${moneyLira(t.total)}</span><br><span class="calc-cell">${moneyTo(t.totalTo)}</span></div>
+      </div>`;
+    list.appendChild(div);
+  });
+  document.getElementById("buyerModal").style.display="block";
+}
+function closeBuyerList(){document.getElementById("buyerModal").style.display="none"}
+
+function downloadBackup(){
+  saveCurrentAccount();
+  const now = new Date();
+  const stamp = now.getFullYear() + "-" +
+    String(now.getMonth()+1).padStart(2,"0") + "-" +
+    String(now.getDate()).padStart(2,"0") + "_" +
+    String(now.getHours()).padStart(2,"0") + "-" +
+    String(now.getMinutes()).padStart(2,"0");
+
+  const payload = {
+    app: "Kel-bek",
+    version: "PWA-cross-platform-v1",
+    createdAt: now.toISOString(),
+    storageKey: STORAGE_KEY,
+    data: db
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Kel-bek-backup-" + stamp + ".json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function restoreBackupFile(input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const payload = JSON.parse(e.target.result);
+      const restored = payload.data && payload.data.accounts ? payload.data : payload;
+
+      if(!restored.accounts){
+        alert("فایل Backup معتبر نیست.");
+        input.value = "";
+        return;
+      }
+
+      if(!confirm("آیا مطمئن هستید؟ اطلاعات فعلی با Backup انتخاب‌شده جایگزین می‌شود.")){
+        input.value = "";
+        return;
+      }
+
+      db = restored;
+      for(const id of Object.keys(db.accounts)){
+        db.accounts[id] = normalizeAccount(db.accounts[id]);
+      }
+
+      if(!db.currentId || !db.accounts[db.currentId]){
+        db.currentId = Object.keys(db.accounts)[0] || null;
+      }
+
+      saveDb();
+      loadCurrentAccount();
+      alert("Backup با موفقیت بازیابی شد.");
+    }catch(err){
+      alert("خطا در خواندن فایل Backup.");
+    }
+    input.value = "";
+  };
+  reader.readAsText(file);
+}
+
+
+loadDb();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("./service-worker.js").catch(function(err){
+      console.log("ServiceWorker registration failed:", err);
+    });
+  });
+}
+</script>
+
+</body>
+</html>
