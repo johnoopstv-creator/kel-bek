@@ -514,36 +514,6 @@ tbody td input {
   color:rgba(17,24,39,.45)!important;
 }
 
-
-.sync-panel{
-  display:grid;
-  grid-template-columns:170px 120px 140px 140px 1fr;
-  gap:8px;
-  align-items:center;
-  margin-bottom:10px;
-  padding:9px;
-  border-radius:14px;
-  background:#f0fdf4;
-  border:1px solid #86efac;
-}
-.login-btn{background:#166534;color:white}
-.logout-btn{background:#64748b;color:white}
-.cloud-btn{background:#0369a1;color:white}
-.cloud-download-btn{background:#7c3aed;color:white}
-.sync-status{
-  padding:8px;
-  border-radius:10px;
-  background:#ffffff;
-  border:1px solid #bbf7d0;
-  font-size:13px;
-  font-weight:900;
-  color:#14532d;
-  line-height:1.6;
-}
-@media(max-width:800px){
-  .sync-panel{grid-template-columns:1fr}
-}
-
 </style>
 </head>
 <body>
@@ -557,14 +527,6 @@ tbody td input {
     <button class="new-top" onclick="newAccount()">حساب جدید</button>
     <button class="list-btn" onclick="showBuyerList()">لیست کل خریداران</button>
     <div class="open-accounts" id="openAccounts"></div>
-  </div>
-
-  <div class="sync-panel">
-    <button class="login-btn" onclick="kelbekSignIn()">ورود با Google</button>
-    <button class="logout-btn" onclick="kelbekSignOut()">خروج</button>
-    <button class="cloud-btn" onclick="kelbekManualCloudSave()">ذخیره ابری</button>
-    <button class="cloud-download-btn" onclick="kelbekManualCloudLoad()">دریافت از ابر</button>
-    <div class="sync-status" id="syncStatus">وضعیت: هنوز وارد Google نشده‌اید. اطلاعات فقط روی همین مرورگر است.</div>
   </div>
 
   <div class="card">
@@ -819,10 +781,7 @@ function loadDb(){
   saveDb();
   loadCurrentAccount();
 }
-function saveDb(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(db));
-  if(window.kelbekCloudAutoSave) window.kelbekCloudAutoSave(db);
-}
+function saveDb(){localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}
 function currentAccount(){
   if(!db.currentId||!db.accounts[db.currentId]){
     const id=newId();db.currentId=id;db.accounts[id]=defaultAccount();
@@ -1105,231 +1064,8 @@ function restoreBackupFile(input){
   };
   reader.readAsText(file);
 }
-
-window.kelbekGetLocalDb = function(){
-  return JSON.parse(JSON.stringify(db));
-};
-window.kelbekSetLocalDb = function(newDb){
-  if(!newDb || !newDb.accounts){
-    alert("داده ابری معتبر نیست.");
-    return;
-  }
-  db = newDb;
-  for(const id of Object.keys(db.accounts)){
-    db.accounts[id] = normalizeAccount(db.accounts[id]);
-  }
-  if(!db.currentId || !db.accounts[db.currentId]){
-    db.currentId = Object.keys(db.accounts)[0] || null;
-  }
-  if(!db.currentId){
-    const id = newId();
-    db.currentId = id;
-    db.accounts[id] = defaultAccount();
-  }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-  loadCurrentAccount();
-};
-
 loadDb();
 </script>
-
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  onSnapshot,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCMV8lwguBK5q3UK430InUiNqY_xl0btUM",
-  authDomain: "kel-bek.firebaseapp.com",
-  projectId: "kel-bek",
-  storageBucket: "kel-bek.firebasestorage.app",
-  messagingSenderId: "91772059857",
-  appId: "1:91772059857:web:c5646a4a5b3c9ffee345f0"
-};
-
-const OWNER_EMAIL = "johnoopstv@gmail.com";
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const firestore = getFirestore(app);
-const provider = new GoogleAuthProvider();
-
-let currentUser = null;
-let cloudDocRef = null;
-let unsubscribeCloud = null;
-let cloudLoading = false;
-let saveTimer = null;
-
-function setStatus(text, good=true){
-  const el = document.getElementById("syncStatus");
-  if(!el) return;
-  el.textContent = text;
-  el.style.background = good ? "#ffffff" : "#fee2e2";
-  el.style.color = good ? "#14532d" : "#7f1d1d";
-  el.style.borderColor = good ? "#bbf7d0" : "#fca5a5";
-}
-
-async function saveCloudNow(reason="auto"){
-  if(!currentUser || !cloudDocRef || cloudLoading) return;
-  const localData = window.kelbekGetLocalDb ? window.kelbekGetLocalDb() : null;
-  if(!localData || !localData.accounts) return;
-  try{
-    await setDoc(cloudDocRef, {
-      app: "Kel-bek",
-      ownerEmail: currentUser.email,
-      updatedAt: serverTimestamp(),
-      reason,
-      data: localData
-    }, { merge: true });
-    setStatus("وضعیت: ذخیره ابری انجام شد — " + currentUser.email);
-  }catch(err){
-    console.error(err);
-    setStatus("خطای ذخیره ابری: " + err.message, false);
-  }
-}
-
-window.kelbekCloudAutoSave = function(){
-  if(!currentUser || cloudLoading) return;
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(()=>saveCloudNow("auto"), 900);
-};
-
-window.kelbekManualCloudSave = async function(){
-  if(!currentUser){
-    setStatus("اول باید با Google وارد شوید.", false);
-    return;
-  }
-  await saveCloudNow("manual");
-};
-
-window.kelbekManualCloudLoad = async function(){
-  if(!currentUser || !cloudDocRef){
-    setStatus("اول باید با Google وارد شوید.", false);
-    return;
-  }
-  try{
-    const snap = await getDoc(cloudDocRef);
-    if(!snap.exists() || !snap.data().data){
-      setStatus("هنوز داده‌ای در ابر وجود ندارد. ابتدا ذخیره ابری بزنید.", false);
-      return;
-    }
-    if(!confirm("اطلاعات این مرورگر با اطلاعات ابری جایگزین شود؟")){
-      return;
-    }
-    cloudLoading = true;
-    window.kelbekSetLocalDb(snap.data().data);
-    cloudLoading = false;
-    setStatus("وضعیت: اطلاعات از ابر دریافت شد — " + currentUser.email);
-  }catch(err){
-    cloudLoading = false;
-    console.error(err);
-    setStatus("خطای دریافت از ابر: " + err.message, false);
-  }
-};
-
-window.kelbekSignIn = async function(){
-  try{
-    await signInWithPopup(auth, provider);
-  }catch(err){
-    console.warn("popup failed, trying redirect", err);
-    try{
-      await signInWithRedirect(auth, provider);
-    }catch(err2){
-      console.error(err2);
-      setStatus("خطای ورود Google: " + err2.message, false);
-    }
-  }
-};
-
-window.kelbekSignOut = async function(){
-  try{
-    await signOut(auth);
-  }catch(err){
-    setStatus("خطای خروج: " + err.message, false);
-  }
-};
-
-try{
-  await getRedirectResult(auth);
-}catch(err){
-  console.warn(err);
-}
-
-onAuthStateChanged(auth, async (user)=>{
-  if(unsubscribeCloud){
-    unsubscribeCloud();
-    unsubscribeCloud = null;
-  }
-
-  if(!user){
-    currentUser = null;
-    cloudDocRef = null;
-    setStatus("وضعیت: هنوز وارد Google نشده‌اید. اطلاعات فقط روی همین مرورگر است.");
-    return;
-  }
-
-  if(user.email !== OWNER_EMAIL){
-    currentUser = null;
-    cloudDocRef = null;
-    setStatus("این ایمیل مجاز نیست: " + user.email + " — فقط " + OWNER_EMAIL + " مجاز است.", false);
-    await signOut(auth);
-    return;
-  }
-
-  currentUser = user;
-  cloudDocRef = doc(firestore, "kelbekUsers", user.uid, "appData", "main");
-  setStatus("وضعیت: وارد شدید — در حال بررسی اطلاعات ابری...");
-
-  try{
-    const snap = await getDoc(cloudDocRef);
-    if(snap.exists() && snap.data().data){
-      cloudLoading = true;
-      window.kelbekSetLocalDb(snap.data().data);
-      cloudLoading = false;
-      setStatus("وضعیت: اطلاعات ابری دریافت شد — " + user.email);
-    }else{
-      await saveCloudNow("first-upload");
-      setStatus("وضعیت: اولین نسخه اطلاعات در ابر ذخیره شد — " + user.email);
-    }
-
-    unsubscribeCloud = onSnapshot(cloudDocRef, (docSnap)=>{
-      if(!docSnap.exists() || !docSnap.data().data || cloudLoading) return;
-      const remote = docSnap.data().data;
-      const local = window.kelbekGetLocalDb ? window.kelbekGetLocalDb() : null;
-      if(JSON.stringify(remote) !== JSON.stringify(local)){
-        cloudLoading = true;
-        window.kelbekSetLocalDb(remote);
-        cloudLoading = false;
-        setStatus("وضعیت: تغییرات ابری دریافت شد — " + user.email);
-      }
-    }, (err)=>{
-      console.error(err);
-      setStatus("خطای گوش دادن به تغییرات ابری: " + err.message, false);
-    });
-
-  }catch(err){
-    cloudLoading = false;
-    console.error(err);
-    setStatus("خطای اتصال به Firebase: " + err.message, false);
-  }
-});
-</script>
-
 
 <script>
 if ("serviceWorker" in navigator) {

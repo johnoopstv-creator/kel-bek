@@ -1,7 +1,7 @@
 {
   "name": "Kel-bek",
   "short_name": "Kel-bek",
-  "description": "دفتر خرید، فروش، پرداخت و بدهی با Firebase Sync",
+  "description": "دفتر خرید، فروش، پرداخت و بدهی",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
