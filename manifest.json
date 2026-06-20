@@ -1,7 +1,7 @@
 {
   "name": "Kel-bek",
   "short_name": "Kel-bek",
-  "description": "دفتر خرید، فروش، پرداخت و بدهی با سود کل نهایی نارنجی",
+  "description": "نسخه نهایی پاکسازی نمایش تومان",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

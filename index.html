@@ -16,7 +16,7 @@ body{
   font-family:Tahoma,Arial,sans-serif;
 }
 .app{
-  max-width:1380px;
+  max-width:1760px;
   margin:0 auto;
   background:#fff;
   border-radius:18px;
@@ -188,7 +188,7 @@ input.readonly-name{
 table{
   border-collapse:separate;
   border-spacing:0;
-  min-width:1240px;
+  min-width:1600px;
   width:100%;
   direction:rtl;
   table-layout:fixed;
@@ -225,9 +225,9 @@ td input{
   font-weight:800;
 }
 .col-row{width:50px}
-.col-product{width:260px}
-.col-money{width:118px}
-.col-control{width:125px}
+.col-product{width:280px}
+.col-money{width:132px}
+.col-control{width:140px}
 .col-percent{width:80px}
 .col-date{width:118px}
 .row-no{
@@ -391,7 +391,7 @@ td input{
   background:white;
   border-radius:18px;
   padding:14px;
-  max-width:1380px;
+  max-width:1760px;
   margin:18px auto;
   max-height:88vh;
   overflow-y:auto;
@@ -463,7 +463,7 @@ td input{
   padding:14px;
 }
 .delete-box{
-  max-width:1380px;
+  max-width:1760px;
   background:#fff;
   border-radius:18px;
   padding:16px;
@@ -482,7 +482,7 @@ td input{
 }
 .cancel-btn{background:#334155;color:#fff}
 .confirm-delete-btn{background:#991b1b;color:#fff}
-@media(max-width:1380px){
+@media(max-width:1760px){
   .toolbar{grid-template-columns:1fr;gap:8px}
   .form-grid{grid-template-columns:1fr 1fr}
   .name-stack{grid-column:1 / -1}
@@ -535,10 +535,10 @@ tbody td input {
 
 /* افزایش عرض صفحه برای استفاده از فضای خالی دو طرف */
 .app,.container,.wrap,.page{
-  max-width:1380px!important;
+  max-width:1760px!important;
 }
 table{
-  min-width:1240px!important;
+  min-width:1600px!important;
 }
 td input,
 .calc-cell{
@@ -557,6 +557,53 @@ td input,
 }
 .final-profit-row .calc-cell{
   color:#111827!important;
+}
+
+
+/* نسخه حرفه‌ای‌تر: عرض بیشتر و جلوگیری از خروج عدد از خانه */
+.app,.container,.wrap,.page{
+  max-width:1760px!important;
+  width:min(1760px,99vw)!important;
+}
+table{
+  min-width:1600px!important;
+}
+tfoot td,
+tfoot .calc-cell,
+.pay-table td,
+.pay-table .calc-cell{
+  font-size:13px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+tfoot .calc-cell,
+.pay-table .calc-cell{
+  max-width:100%!important;
+}
+
+
+/* نسخه عریض‌تر و حرفه‌ای‌تر */
+body{
+  padding-left:8px!important;
+  padding-right:8px!important;
+}
+.app,.container,.wrap,.page,.main-box{
+  max-width:1760px!important;
+  width:min(1760px,99vw)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+table{
+  min-width:1600px!important;
+}
+td,th{
+  overflow:visible!important;
+}
+
+.pay-table td,
+tfoot td{
+  white-space:nowrap!important;
 }
 
 </style>
@@ -816,7 +863,7 @@ function fmtPct(n){
   return n.toLocaleString("en-US",{maximumFractionDigits:2});
 }
 function moneyLira(n){return "₺ "+fmt(n)}
-function moneyToman(n){return fmt(n)+" تومان"}
+function moneyToman(n){return fmt(n)+" ت"}
 function signedMoneyLira(n){
   n=Number(n||0);
   if(n<0)return "+ ₺ "+fmt(Math.abs(n));
@@ -1146,7 +1193,7 @@ function downloadBackup(){
   saveCurrentAccount();
   const now=new Date();
   const stamp=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+"_"+String(now.getHours()).padStart(2,"0")+"-"+String(now.getMinutes()).padStart(2,"0");
-  const payload={app:"Kel-bek",version:"professional-invoice-v8-final-profit-orange",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
+  const payload={app:"Kel-bek",version:"professional-invoice-v12-clean-toman",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
