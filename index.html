@@ -606,6 +606,97 @@ tfoot td{
   white-space:nowrap!important;
 }
 
+
+/* ===== تنظیمات دستی فاکتور ===== */
+.invoice-tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:end;
+  justify-content:flex-start;
+  border:1px solid #cbd5e1;
+  background:#f8fafc;
+  border-radius:14px;
+  padding:10px;
+  margin:10px 0;
+}
+.invoice-tools .tool-field{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:145px;
+}
+.invoice-tools label{
+  font-size:12px;
+  font-weight:900;
+  color:#0f172a;
+}
+.invoice-tools input{
+  width:100%;
+  height:34px;
+  padding:5px 8px;
+}
+.invoice-tools button{
+  height:34px;
+  border:0;
+  border-radius:9px;
+  padding:0 12px;
+  cursor:pointer;
+  font-weight:900;
+  background:#0f172a;
+  color:white;
+}
+:root{
+  --invoice-font-size:14px;
+  --invoice-font-weight:800;
+  --invoice-text-darkness:#111827;
+}
+.invoice-font-scope table,
+.invoice-font-scope table input,
+.invoice-font-scope table button,
+.invoice-font-scope table td,
+.invoice-font-scope table th,
+.invoice-font-scope .calc-cell{
+  font-size:var(--invoice-font-size)!important;
+  font-weight:var(--invoice-font-weight)!important;
+}
+.invoice-font-scope table td,
+.invoice-font-scope table input,
+.invoice-font-scope .calc-cell{
+  color:var(--invoice-text-darkness)!important;
+}
+.invoice-font-scope thead th,
+.invoice-font-scope .sum-row td,
+.invoice-font-scope .section-title,
+.invoice-font-scope .pay-table thead th{
+  color:#fff!important;
+}
+
+/* ===== تغییر عرض ستون‌ها با موس مثل اکسل ===== */
+.resizable-table th{
+  position:relative;
+  user-select:none;
+}
+.resizable-table th .col-resizer{
+  position:absolute;
+  top:0;
+  left:0;
+  width:7px;
+  height:100%;
+  cursor:col-resize;
+  z-index:10;
+}
+.resizable-table th .col-resizer:hover{
+  background:rgba(37,99,235,.35);
+}
+.resizing-active{
+  cursor:col-resize!important;
+  user-select:none!important;
+}
+.table-wrap{
+  overflow-x:auto;
+}
+
 </style>
 </head>
 <body>
@@ -661,8 +752,25 @@ tfoot td{
     <button class="new-small" onclick="addRow()">افزودن ردیف</button>
   </div>
 
-  <div class="table-wrap">
-    <table>
+
+  <div class="invoice-tools">
+    <div class="tool-field">
+      <label>اندازه فونت فاکتور</label>
+      <input id="invoiceFontSize" class="num" type="number" min="10" max="22" step="1" value="14" oninput="applyInvoiceStyleFromControls()">
+    </div>
+    <div class="tool-field">
+      <label>ضخامت فونت</label>
+      <input id="invoiceFontWeight" class="num" type="range" min="400" max="950" step="50" value="800" oninput="applyInvoiceStyleFromControls()">
+    </div>
+    <div class="tool-field">
+      <label>تیرگی نوشته</label>
+      <input id="invoiceDarkness" class="num" type="range" min="0" max="100" step="5" value="95" oninput="applyInvoiceStyleFromControls()">
+    </div>
+    <button type="button" onclick="resetInvoiceLayout()">ریست عرض و فونت</button>
+  </div>
+
+  <div class="table-wrap invoice-font-scope">
+    <table id="invoiceTable" class="resizable-table">
       <thead>
         <tr>
           <th class="col-row">ردیف</th>
@@ -863,7 +971,7 @@ function fmtPct(n){
   return n.toLocaleString("en-US",{maximumFractionDigits:2});
 }
 function moneyLira(n){return "₺ "+fmt(n)}
-function moneyToman(n){return fmt(n)+" ت"}
+function moneyToman(n){return fmt(n)+" تومان"}
 function signedMoneyLira(n){
   n=Number(n||0);
   if(n<0)return "+ ₺ "+fmt(Math.abs(n));
@@ -1193,7 +1301,7 @@ function downloadBackup(){
   saveCurrentAccount();
   const now=new Date();
   const stamp=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+"_"+String(now.getHours()).padStart(2,"0")+"-"+String(now.getMinutes()).padStart(2,"0");
-  const payload={app:"Kel-bek",version:"professional-invoice-v12-clean-toman",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
+  const payload={app:"Kel-bek",version:"professional-invoice-v13-excel-font-controls",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
@@ -1227,7 +1335,118 @@ function restoreBackupFile(input){
   };
   reader.readAsText(file);
 }
+
+const LAYOUT_KEY="kelbek_invoice_layout_v1";
+
+function getLayout(){
+  try{return JSON.parse(localStorage.getItem(LAYOUT_KEY)||"{}")||{}}catch(e){return{}}
+}
+function saveLayout(layout){
+  localStorage.setItem(LAYOUT_KEY,JSON.stringify(layout||{}));
+}
+function darknessToColor(v){
+  v=Math.max(0,Math.min(100,Number(v||95)));
+  const light=120, dark=17;
+  const n=Math.round(light-(light-dark)*(v/100));
+  return `rgb(${n},${n+7},${n+16})`;
+}
+function applyInvoiceStyleFromControls(){
+  const layout=getLayout();
+  const fs=document.getElementById("invoiceFontSize")?Number(document.getElementById("invoiceFontSize").value||14):14;
+  const fw=document.getElementById("invoiceFontWeight")?Number(document.getElementById("invoiceFontWeight").value||800):800;
+  const dk=document.getElementById("invoiceDarkness")?Number(document.getElementById("invoiceDarkness").value||95):95;
+  layout.fontSize=fs;
+  layout.fontWeight=fw;
+  layout.darkness=dk;
+  saveLayout(layout);
+  applyInvoiceLayout();
+}
+function applyInvoiceLayout(){
+  const layout=getLayout();
+  const fs=layout.fontSize||14;
+  const fw=layout.fontWeight||800;
+  const dk=layout.darkness===undefined?95:layout.darkness;
+  document.documentElement.style.setProperty("--invoice-font-size",fs+"px");
+  document.documentElement.style.setProperty("--invoice-font-weight",String(fw));
+  document.documentElement.style.setProperty("--invoice-text-darkness",darknessToColor(dk));
+  const fsEl=document.getElementById("invoiceFontSize");
+  const fwEl=document.getElementById("invoiceFontWeight");
+  const dkEl=document.getElementById("invoiceDarkness");
+  if(fsEl)fsEl.value=fs;
+  if(fwEl)fwEl.value=fw;
+  if(dkEl)dkEl.value=dk;
+  applyColumnWidths();
+}
+function applyColumnWidths(){
+  const table=document.getElementById("invoiceTable");
+  if(!table)return;
+  const layout=getLayout();
+  const widths=layout.colWidths||{};
+  const ths=table.querySelectorAll("thead th");
+  ths.forEach((th,i)=>{
+    if(widths[i]){
+      th.style.width=widths[i]+"px";
+      th.style.minWidth=widths[i]+"px";
+    }
+  });
+}
+function setupResizableColumns(){
+  const table=document.getElementById("invoiceTable");
+  if(!table)return;
+  const ths=table.querySelectorAll("thead th");
+  ths.forEach((th,index)=>{
+    if(th.querySelector(".col-resizer"))return;
+    const grip=document.createElement("div");
+    grip.className="col-resizer";
+    grip.title="برای تغییر عرض ستون بکشید";
+    th.appendChild(grip);
+
+    let startX=0,startW=0;
+    const onMove=(e)=>{
+      const dx=startX-e.clientX; // RTL: کشیدن به راست/چپ طبیعی‌تر
+      const newW=Math.max(45,startW+dx);
+      th.style.width=newW+"px";
+      th.style.minWidth=newW+"px";
+      const layout=getLayout();
+      layout.colWidths=layout.colWidths||{};
+      layout.colWidths[index]=Math.round(newW);
+      saveLayout(layout);
+    };
+    const onUp=()=>{
+      document.body.classList.remove("resizing-active");
+      document.removeEventListener("mousemove",onMove);
+      document.removeEventListener("mouseup",onUp);
+    };
+    grip.addEventListener("mousedown",(e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      startX=e.clientX;
+      startW=th.getBoundingClientRect().width;
+      document.body.classList.add("resizing-active");
+      document.addEventListener("mousemove",onMove);
+      document.addEventListener("mouseup",onUp);
+    });
+  });
+  applyColumnWidths();
+}
+function resetInvoiceLayout(){
+  localStorage.removeItem(LAYOUT_KEY);
+  const table=document.getElementById("invoiceTable");
+  if(table){
+    table.querySelectorAll("thead th").forEach(th=>{
+      th.style.width="";
+      th.style.minWidth="";
+    });
+  }
+  applyInvoiceLayout();
+}
+function initInvoiceLayoutTools(){
+  setupResizableColumns();
+  applyInvoiceLayout();
+}
+
 loadDb();
+initInvoiceLayoutTools();
 </script>
 
 <script>

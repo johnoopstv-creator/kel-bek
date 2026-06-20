@@ -1,7 +1,7 @@
 {
   "name": "Kel-bek",
   "short_name": "Kel-bek",
-  "description": "نسخه نهایی پاکسازی نمایش تومان",
+  "description": "نسخه با تغییر عرض ستون‌ها و تنظیم فونت فاکتور",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
