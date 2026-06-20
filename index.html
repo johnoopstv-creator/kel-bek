@@ -16,7 +16,7 @@ body{
   font-family:Tahoma,Arial,sans-serif;
 }
 .app{
-  max-width:1180px;
+  max-width:1380px;
   margin:0 auto;
   background:#fff;
   border-radius:18px;
@@ -188,7 +188,7 @@ input.readonly-name{
 table{
   border-collapse:separate;
   border-spacing:0;
-  min-width:1060px;
+  min-width:1240px;
   width:100%;
   direction:rtl;
   table-layout:fixed;
@@ -199,7 +199,7 @@ table{
 th,td{
   border-left:1px solid #94a3b8;
   border-bottom:1px solid #94a3b8;
-  padding:7px;
+  padding:5px;
   text-align:center;
   vertical-align:middle;
   font-size:14px;
@@ -218,17 +218,18 @@ thead th{
 tbody tr:nth-child(odd) td{background:#ffffff}
 tbody tr:nth-child(even) td{background:#f1f5f9}
 td input{
-  padding:8px;
+  padding:6px;
   border-radius:7px;
   font-size:13px;
-  height:36px;
+  height:34px;
   font-weight:800;
 }
-.col-row{width:70px}
-.col-product{width:180px}
-.col-money{width:130px}
-.col-percent{width:100px}
-.col-date{width:135px}
+.col-row{width:50px}
+.col-product{width:260px}
+.col-money{width:118px}
+.col-control{width:125px}
+.col-percent{width:80px}
+.col-date{width:118px}
 .row-no{
   font-family:Arial,sans-serif;
   font-weight:900;
@@ -251,13 +252,7 @@ td input{
   font-weight:900;
   user-select:none;
 }
-.sum-row td{
-  background:#4b5563!important;
-  color:#fff!important;
-  font-weight:900;
-  font-size:14px;
-}
-.sum-row .calc-cell{color:#fff!important}
+
 .toman-row td{
   background:#e5e7eb!important;
   color:#111827!important;
@@ -396,7 +391,7 @@ td input{
   background:white;
   border-radius:18px;
   padding:14px;
-  max-width:780px;
+  max-width:1380px;
   margin:18px auto;
   max-height:88vh;
   overflow-y:auto;
@@ -468,7 +463,7 @@ td input{
   padding:14px;
 }
 .delete-box{
-  max-width:420px;
+  max-width:1380px;
   background:#fff;
   border-radius:18px;
   padding:16px;
@@ -487,7 +482,7 @@ td input{
 }
 .cancel-btn{background:#334155;color:#fff}
 .confirm-delete-btn{background:#991b1b;color:#fff}
-@media(max-width:800px){
+@media(max-width:1380px){
   .toolbar{grid-template-columns:1fr;gap:8px}
   .form-grid{grid-template-columns:1fr 1fr}
   .name-stack{grid-column:1 / -1}
@@ -512,6 +507,56 @@ tbody td input {
 }
 .rate-field input::placeholder {
   color:rgba(17,24,39,.45)!important;
+}
+
+
+
+.control-toman-input{
+  background:#fff7ed!important;
+  border-color:#f59e0b!important;
+}
+.control-lira-output{
+  background:#e2e8f0!important;
+  color:#0f172a!important;
+  font-weight:900;
+  direction:ltr;
+  font-family:Arial,sans-serif;
+}
+.sum-row td{
+  background:#2563eb!important;
+  color:#ffffff!important;
+  font-weight:900;
+  font-size:14px;
+}
+.sum-row .calc-cell{
+  color:#ffffff!important;
+}
+
+
+/* افزایش عرض صفحه برای استفاده از فضای خالی دو طرف */
+.app,.container,.wrap,.page{
+  max-width:1380px!important;
+}
+table{
+  min-width:1240px!important;
+}
+td input,
+.calc-cell{
+  overflow:visible!important;
+}
+.control-lira-output{
+  min-width:105px;
+  display:inline-block;
+}
+
+
+.final-profit-row td{
+  background:#fed7aa!important;
+  color:#111827!important;
+  font-weight:900!important;
+}
+.final-profit-row .calc-cell{
+  color:#111827!important;
 }
 
 </style>
@@ -581,6 +626,8 @@ tbody td input {
           <th class="col-money">قیمت نهایی<br>₺</th>
           <th class="col-date">تاریخ خرید</th>
           <th class="col-date">تاریخ ارسال</th>
+          <th class="col-control">تومان کنترل</th>
+          <th class="col-control">لیر کنترل</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -592,7 +639,7 @@ tbody td input {
           <td>---</td>
           <td><span id="sumProfit" class="calc-cell">₺ 0</span></td>
           <td><span id="sumBuyPlusProfit" class="calc-cell">₺ 0</span></td>
-          <td colspan="2" class="unit-cell"></td>
+          <td colspan="4" class="unit-cell"></td>
         </tr>
         <tr class="toman-row">
           <td></td>
@@ -601,7 +648,43 @@ tbody td input {
           <td>---</td>
           <td><span id="sumProfitTo" class="calc-cell">0 تومان</span></td>
           <td><span id="sumBuyPlusProfitTo" class="calc-cell">0 تومان</span></td>
-          <td colspan="2" class="unit-cell"></td>
+          <td colspan="4" class="unit-cell"></td>
+        </tr>
+        <tr class="extra-profit-row">
+          <td></td>
+          <td>سود مازاد</td>
+          <td>---</td>
+          <td>---</td>
+          <td><input id="extraProfit" class="num extra-profit-input" type="text" inputmode="decimal" placeholder="0" oninput="formatLiveInput(this);calculateAndSave()" onblur="formatFinalExtraProfit(this)"></td>
+          <td><span id="invoiceWithExtra" class="calc-cell">₺ 0</span></td>
+          <td colspan="4" class="unit-cell">لیر</td>
+        </tr>
+        <tr class="toman-row">
+          <td></td>
+          <td>سود مازاد تومان</td>
+          <td>---</td>
+          <td>---</td>
+          <td><span id="extraProfitTo" class="calc-cell">0 تومان</span></td>
+          <td><span id="invoiceWithExtraTo" class="calc-cell">0 تومان</span></td>
+          <td colspan="4" class="unit-cell">تومان</td>
+        </tr>
+        <tr class="final-profit-row">
+          <td></td>
+          <td>سود کل نهایی</td>
+          <td>---</td>
+          <td>---</td>
+          <td><span id="finalProfit" class="calc-cell">₺ 0</span></td>
+          <td><span id="finalInvoice" class="calc-cell">₺ 0</span></td>
+          <td colspan="4" class="unit-cell">سود فاکتور + سود مازاد</td>
+        </tr>
+        <tr class="final-invoice-row">
+          <td></td>
+          <td>معادل نهایی تومان</td>
+          <td>---</td>
+          <td>---</td>
+          <td><span id="finalProfitTo" class="calc-cell">0 تومان</span></td>
+          <td><span id="finalInvoiceTo" class="calc-cell">0 تومان</span></td>
+          <td colspan="4" class="unit-cell"></td>
         </tr>
       </tfoot>
     </table>
@@ -709,7 +792,7 @@ let isLoading=false;
 
 
 function newId(){return "acc_"+Date.now()+"_"+Math.floor(Math.random()*100000)}
-function emptyRow(i){return{no:i,product:"",buy:"",profitPercent:"",buyDateRow:"",sendDateRow:""}}
+function emptyRow(i){return{no:i,product:"",buy:"",profitPercent:"",buyDateRow:"",sendDateRow:"",controlToman:""}}
 function emptyPayment(i){return{no:i,amount:"",date:""}}
 function cleanNumberString(v){
   let s=String(v||"");
@@ -755,16 +838,18 @@ function formatLiveInput(el){
 }
 function formatFinalInput(el){if(el.value.trim()==="")return;el.value=fmt(toNumber(el.value))}
 function escapeHtml(value){return String(value||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;")}
-function defaultAccount(){return{firstName:"",lastName:"",buyDate:"",sendDate:"",rate:"",activeRows:1,rows:[emptyRow(1)],payments:[emptyPayment(1)]}}
+function defaultAccount(){return{firstName:"",lastName:"",buyDate:"",sendDate:"",rate:"",extraProfit:"",activeRows:1,rows:[emptyRow(1)],payments:[emptyPayment(1)]}}
 function normalizeAccount(acc){
   if(!acc.rows)acc.rows=[emptyRow(1)];
   if(!acc.activeRows)acc.activeRows=acc.rows.length||1;
   while(acc.rows.length<acc.activeRows)acc.rows.push(emptyRow(acc.rows.length+1));
+  acc.rows.forEach(r=>{if(r.controlToman===undefined)r.controlToman="";});
   if(!acc.payments){
     acc.payments=[];
     if(acc.paid||acc.paidDate)acc.payments.push({no:1,amount:acc.paid||"",date:acc.paidDate||""});
   }
   if(!acc.payments.length)acc.payments.push(emptyPayment(1));
+  if(acc.extraProfit===undefined)acc.extraProfit="";
   return acc;
 }
 function loadDb(){
@@ -800,6 +885,8 @@ function loadCurrentAccount(){
   document.getElementById("buyDate").value=acc.buyDate||"";
   document.getElementById("sendDate").value=acc.sendDate||"";
   document.getElementById("rate").value=acc.rate||"";
+  const extraEl=document.getElementById("extraProfit");
+  if(extraEl)extraEl.value=acc.extraProfit||"";
   document.getElementById("activeRows").value=activeRows;
   renderRows();
   renderPayments();
@@ -815,6 +902,7 @@ function saveCurrentAccount(){
   acc.buyDate=document.getElementById("buyDate").value;
   acc.sendDate=document.getElementById("sendDate").value;
   acc.rate=document.getElementById("rate").value;
+  acc.extraProfit=document.getElementById("extraProfit")?document.getElementById("extraProfit").value:"";
   acc.activeRows=activeRows;
   acc.rows=rows;
   acc.payments=payments;
@@ -852,11 +940,19 @@ function renderOpenAccounts(){
   });
   document.getElementById("activeAccountName").value=getDisplayName(currentAccount());
 }
+
+function controlLiraText(r){
+  const rate=toNumber(document.getElementById("rate")?document.getElementById("rate").value:"");
+  const toman=toNumber(r && r.controlToman);
+  return rate>0 ? moneyLira(toman/rate) : "₺ 0";
+}
+
 function renderRows(){
   const tbody=document.getElementById("tbody");
   tbody.innerHTML="";
   for(let i=0;i<activeRows;i++){
     if(!rows[i])rows[i]=emptyRow(i+1);
+    if(rows[i].controlToman===undefined)rows[i].controlToman="";
     rows[i].no=i+1;
     const r=rows[i], buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
     const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
@@ -869,7 +965,9 @@ function renderRows(){
       <td><span id="profitAmount_${i}" class="calc-cell">${moneyLira(profitAmount)}</span></td>
       <td><span id="buyPlusProfit_${i}" class="calc-cell">${moneyLira(buyPlusProfit)}</span></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(r.buyDateRow)}" oninput="updateCell(${i},'buyDateRow',this.value)" title="تاریخ"></td>
-      <td><input class="num date-input" type="date" value="${escapeHtml(r.sendDateRow)}" oninput="updateCell(${i},'sendDateRow',this.value)" title="تاریخ"></td>`;
+      <td><input class="num date-input" type="date" value="${escapeHtml(r.sendDateRow)}" oninput="updateCell(${i},'sendDateRow',this.value)" title="تاریخ"></td>
+      <td><input class="num control-toman-input" type="text" inputmode="decimal" value="${escapeHtml(r.controlToman||'')}" oninput="formatLiveInput(this);updateCell(${i},'controlToman',this.value)" onblur="formatFinalCell(${i},'controlToman',this)"></td>
+      <td><span id="controlLira_${i}" class="calc-cell control-lira-output">${controlLiraText(r)}</span></td>`;
     tbody.appendChild(tr);
   }
 }
@@ -896,6 +994,8 @@ function updatePayment(index,key,value){if(!payments[index])payments[index]=empt
 function formatFinalCell(index,key,el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));rows[index][key]=el.value;calculateAndSave()}}
 function formatPercentCell(index,el){if(el.value.trim()!==""){const n=toNumber(el.value);el.value=fmtPct(n);rows[index].profitPercent=el.value;calculateAndSave()}}
 function formatFinalPayment(index,el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));payments[index].amount=el.value;calculateAndSave()}}
+function formatFinalControl(el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));calculateAndSave()}}
+function formatFinalExtraProfit(el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));calculateAndSave()}}
 function addRow(){
   activeRows+=1;
   if(activeRows>300)activeRows=300;
@@ -911,17 +1011,20 @@ function addPayment(){
 }
 function totalsFor(acc){
   acc=normalizeAccount(acc);
-  let sumBuy=0,sumProfit=0,total=0;
+  let sumBuy=0,sumProfit=0,baseTotal=0;
   const count=acc.activeRows||acc.rows.length||1;
   for(let i=0;i<count;i++){
     const r=acc.rows[i]||emptyRow(i+1), buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
     const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
-    sumBuy+=buy;sumProfit+=profitAmount;total+=buyPlusProfit;
+    sumBuy+=buy;sumProfit+=profitAmount;baseTotal+=buyPlusProfit;
   }
+  const extraProfit=toNumber(acc.extraProfit);
+  const finalProfit=sumProfit+extraProfit;
+  const total=baseTotal+extraProfit;
   let paid=0;
   (acc.payments||[]).forEach(p=>paid+=toNumber(p.amount));
   const remain=total-paid, rate=toNumber(acc.rate);
-  return{sumBuy,sumProfit,total,paid,remain,rate,totalTo:total*rate,paidTo:paid*rate,remainTo:remain*rate};
+  return{sumBuy,sumProfit,extraProfit,finalProfit,baseTotal,total,paid,remain,rate,totalTo:total*rate,paidTo:paid*rate,remainTo:remain*rate};
 }
 function calculate(){
   const acc=currentAccount();
@@ -929,6 +1032,7 @@ function calculate(){
   acc.firstName=document.getElementById("firstName").value;
   acc.lastName=document.getElementById("lastName").value;
   acc.rate=document.getElementById("rate").value;
+  acc.extraProfit=document.getElementById("extraProfit")?document.getElementById("extraProfit").value:"";
   acc.buyDate=document.getElementById("buyDate").value;
   acc.sendDate=document.getElementById("sendDate").value;
   let sumBuy=0,sumProfit=0,sumBuyPlusProfit=0;
@@ -937,23 +1041,35 @@ function calculate(){
     const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
     sumBuy+=buy;sumProfit+=profitAmount;sumBuyPlusProfit+=buyPlusProfit;
     const pa=document.getElementById("profitAmount_"+i), bp=document.getElementById("buyPlusProfit_"+i);
+    const cl=document.getElementById("controlLira_"+i);
+    if(cl)cl.textContent=controlLiraText(r);
     if(pa)pa.textContent=moneyLira(profitAmount);
     if(bp)bp.textContent=moneyLira(buyPlusProfit);
   }
   const rate=toNumber(document.getElementById("rate").value);
+  const extraProfit=toNumber(document.getElementById("extraProfit")?document.getElementById("extraProfit").value:"");
+  const finalProfit=sumProfit+extraProfit;
+  const finalInvoice=sumBuyPlusProfit+extraProfit;
   let paid=0;
   payments.forEach((p,i)=>{
     paid+=toNumber(p.amount);
     const cell=document.getElementById("paymentTo_"+i);
     if(cell)cell.textContent=moneyToman(toNumber(p.amount)*rate);
   });
-  const remain=sumBuyPlusProfit-paid;
+  const remain=finalInvoice-paid;
   document.getElementById("sumBuy").textContent=moneyLira(sumBuy);
   document.getElementById("sumProfit").textContent=moneyLira(sumProfit);
   document.getElementById("sumBuyPlusProfit").textContent=moneyLira(sumBuyPlusProfit);
   document.getElementById("sumBuyTo").textContent=moneyToman(sumBuy*rate);
   document.getElementById("sumProfitTo").textContent=moneyToman(sumProfit*rate);
   document.getElementById("sumBuyPlusProfitTo").textContent=moneyToman(sumBuyPlusProfit*rate);
+  document.getElementById("extraProfitTo").textContent=moneyToman(extraProfit*rate);
+  document.getElementById("invoiceWithExtra").textContent=moneyLira(finalInvoice);
+  document.getElementById("invoiceWithExtraTo").textContent=moneyToman(finalInvoice*rate);
+  document.getElementById("finalProfit").textContent=moneyLira(finalProfit);
+  document.getElementById("finalProfitTo").textContent=moneyToman(finalProfit*rate);
+  document.getElementById("finalInvoice").textContent=moneyLira(finalInvoice);
+  document.getElementById("finalInvoiceTo").textContent=moneyToman(finalInvoice*rate);
   document.getElementById("paidTotal").textContent=moneyLira(paid);
   document.getElementById("paidTo").textContent=moneyToman(paid*rate);
 
@@ -1030,7 +1146,7 @@ function downloadBackup(){
   saveCurrentAccount();
   const now=new Date();
   const stamp=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+"_"+String(now.getHours()).padStart(2,"0")+"-"+String(now.getMinutes()).padStart(2,"0");
-  const payload={app:"Kel-bek",version:"professional-invoice-v1",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
+  const payload={app:"Kel-bek",version:"professional-invoice-v8-final-profit-orange",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");

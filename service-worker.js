@@ -1,4 +1,4 @@
-const CACHE_NAME = "kel-bek-calendar-green-v3";
+const CACHE_NAME = "kel-bek-control-after-send-wide-v10";
 const FILES_TO_CACHE = ["./","./index.html","./manifest.json","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE)));
