@@ -259,9 +259,25 @@ td input{
   font-weight:900;
   font-size:13px;
 }
+.inline-unit{display:inline-block;margin-inline-start:10px;font-weight:700;color:#1f2937;}
+.invoice-extra-cell{text-align:center;}
 .unit-cell{
   font-size:15px!important;
   font-weight:900!important;
+}
+.ghost-cell{
+  border:none!important;
+  background:transparent!important;
+  padding:0!important;
+}
+.compact-formula{
+  text-align:center!important;
+  white-space:nowrap!important;
+  font-size:12px!important;
+}
+.compact-value{
+  text-align:center!important;
+  white-space:nowrap!important;
 }
 .section-title{
   margin-top:12px;
@@ -697,6 +713,380 @@ tfoot td{
   overflow-x:auto;
 }
 
+
+.buy-rate-field input{
+  background:#22c55e!important;
+  color:#052e16!important;
+  -webkit-text-fill-color:#052e16!important;
+  border-color:#15803d!important;
+  font-size:18px;
+  font-weight:900;
+}
+.shipping-input{
+  background:#eef2ff!important;
+  border-color:#6366f1!important;
+}
+.lira-diff-row td{
+  background:#dcfce7!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-weight:900!important;
+}
+.lira-diff-row .calc-cell{color:#111827!important;-webkit-text-fill-color:#111827!important}
+
+/* ردیف آبی جمع فاکتور: همه نوشته‌ها و عددها سفید */
+.sum-row td,
+.sum-row td *,
+.sum-row .calc-cell,
+.sum-row input,
+.sum-row span{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+.sum-row input{
+  background:transparent!important;
+  border-color:rgba(255,255,255,.45)!important;
+}
+
+/* اصلاح کنترل ضخامت و تیرگی فونت */
+.invoice-font-scope table,
+.invoice-font-scope table input,
+.invoice-font-scope table button,
+.invoice-font-scope table td,
+.invoice-font-scope table th,
+.invoice-font-scope .calc-cell{
+  font-size:var(--invoice-font-size)!important;
+}
+.invoice-font-scope table input,
+.invoice-font-scope table td,
+.invoice-font-scope .calc-cell{
+  font-weight:var(--invoice-font-weight)!important;
+  color:var(--invoice-text-darkness)!important;
+  -webkit-text-fill-color:var(--invoice-text-darkness)!important;
+}
+.invoice-font-scope thead th,
+.invoice-font-scope thead th *,
+.invoice-font-scope .section-title,
+.invoice-font-scope .section-title *,
+.invoice-font-scope .pay-table thead th,
+.invoice-font-scope .pay-table thead th *,
+.invoice-font-scope .sum-row td,
+.invoice-font-scope .sum-row td *{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+table{min-width:1760px!important}
+.app,.container,.wrap,.page{max-width:1840px!important;width:min(1840px,99vw)!important}
+
+
+/* تنظیمات فونت روی بخش پرداخت‌ها هم اعمال شود */
+.pay-table,
+.pay-table input,
+.pay-table button,
+.pay-table td,
+.pay-table th,
+.pay-table .calc-cell,
+.payment-box,
+.payment-box input,
+.payment-box td,
+.payment-box th,
+.payment-box .calc-cell{
+  font-size:var(--invoice-font-size)!important;
+}
+.pay-table input,
+.pay-table td,
+.pay-table .calc-cell,
+.payment-box input,
+.payment-box td,
+.payment-box .calc-cell{
+  font-weight:var(--invoice-font-weight)!important;
+  color:var(--invoice-text-darkness)!important;
+  -webkit-text-fill-color:var(--invoice-text-darkness)!important;
+}
+.pay-table thead th,
+.pay-table thead th *,
+.section-title,
+.section-title *{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+.payment-toman-input{
+  background:#ecfdf5!important;
+  border-color:#22c55e!important;
+}
+
+
+.buy-rate-wrap{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.buy-rate-wrap input{
+  flex:1;
+}
+.diff-sign-btn{
+  width:34px;
+  height:34px;
+  border:1px solid #15803d;
+  border-radius:8px;
+  background:#dcfce7;
+  color:#052e16;
+  font-weight:900;
+  font-size:18px;
+  cursor:pointer;
+}
+.diff-sign-btn.active{
+  background:#0f172a!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+
+
+.lira-diff-row td{
+  background:#ecfdf5!important;
+}
+#liraDiffStatus{
+  font-weight:900!important;
+}
+
+
+/* ===== چیدمان جمع‌وجورتر بالای فاکتور ===== */
+.top{
+  padding:12px 14px!important;
+  min-height:auto!important;
+}
+.top h1{
+  margin:0!important;
+  font-size:30px!important;
+}
+.top div{
+  font-size:14px!important;
+}
+.toolbar{
+  margin:8px 0!important;
+}
+.card{
+  padding:10px!important;
+  margin:8px 0!important;
+}
+.card-title{
+  display:none!important;
+}
+.form-grid{
+  gap:8px!important;
+  align-items:end!important;
+}
+.name-stack{
+  max-width:340px!important;
+}
+.field label{
+  text-align:center!important;
+}
+
+/* ===== وسط‌چین کردن خانه‌های نرخ و حساب فعال ===== */
+.center-box-input,
+.rate-field input,
+.buy-rate-field input,
+.lira-diff-field .readonly-diff,
+.readonly-name{
+  text-align:center!important;
+  justify-content:center!important;
+  align-items:center!important;
+}
+.rate-field input,
+.buy-rate-field input,
+.lira-diff-field .readonly-diff,
+#activeAccountName{
+  height:44px!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  border-radius:10px!important;
+}
+.lira-diff-field .readonly-diff{
+  display:flex;
+  background:#ffffff!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  border:1px solid #94a3b8!important;
+  padding:0 8px!important;
+  white-space:nowrap!important;
+}
+
+/* ===== خلاصه فاکتور برای دیدن با یک نگاه ===== */
+.summary-strip{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(160px,1fr));
+  gap:10px;
+  margin:10px 0 12px 0;
+}
+.summary-card{
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  background:#f8fafc;
+  padding:10px;
+  text-align:center;
+  box-shadow:0 1px 2px rgba(15,23,42,.08);
+}
+.summary-card.profit-card{
+  background:#fff7ed;
+  border-color:#fdba74;
+}
+.summary-label{
+  font-size:13px;
+  font-weight:900;
+  color:#334155;
+  margin-bottom:4px;
+}
+.summary-value{
+  font-size:22px;
+  font-weight:950;
+  color:#0f172a;
+  direction:ltr;
+}
+.summary-sub{
+  font-size:14px;
+  font-weight:900;
+  color:#475569;
+  margin-top:2px;
+}
+
+/* ===== ردیف اختلاف لیر: متن کوچک، عددها خواناتر ===== */
+.lira-diff-row .unit-cell{
+  font-size:11px!important;
+  white-space:normal!important;
+  line-height:1.25!important;
+  max-width:140px!important;
+}
+.lira-diff-row .calc-cell{
+  font-size:13px!important;
+  white-space:nowrap!important;
+}
+#liraDiffProfit,
+#liraDiffProfitTo{
+  display:inline-block;
+  min-width:110px;
+}
+
+/* ===== جمع هزینه ارسال در ردیف آبی خوانا ===== */
+#sumShippingBlue{
+  display:inline-block;
+  min-width:105px;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+
+/* ===== عرض بهتر ستون‌های عددی ===== */
+.col-control{width:165px!important}
+.col-money{width:145px!important}
+
+
+.summary-strip{
+  grid-template-columns:repeat(4,minmax(160px,1fr))!important;
+}
+
+
+/* ===== کنترل واقعی فونت جدول و پرداخت‌ها ===== */
+:root{
+  --invoice-font-family:Tahoma,Arial,sans-serif;
+  --invoice-font-size:14px;
+  --invoice-font-weight:800;
+  --invoice-text-darkness:#111111;
+}
+.invoice-font-scope table td,
+.invoice-font-scope table td *,
+.invoice-font-scope table input,
+.invoice-font-scope table button,
+.payment-box table td,
+.payment-box table td *,
+.payment-box table input,
+.payment-box table button{
+  font-family:var(--invoice-font-family)!important;
+  font-size:var(--invoice-font-size)!important;
+  font-weight:var(--invoice-font-weight)!important;
+  color:var(--invoice-text-darkness)!important;
+  -webkit-text-fill-color:var(--invoice-text-darkness)!important;
+}
+.invoice-font-scope thead th,
+.payment-box thead th{
+  font-family:var(--invoice-font-family)!important;
+  font-size:var(--invoice-font-size)!important;
+  font-weight:var(--invoice-font-weight)!important;
+}
+/* خلاصه بالا عمداً مستقل می‌ماند */
+.summary-strip,
+.summary-strip *{
+  font-family:Tahoma,Arial,sans-serif!important;
+}
+
+/* ===== پنل فرمول و ارتباط خانه‌ها ===== */
+.cell-audit-panel{
+  margin:8px 0 10px 0;
+  padding:10px 12px;
+  border:2px solid #2563eb;
+  background:#eff6ff;
+  border-radius:12px;
+  color:#0f172a;
+  font-size:13px;
+  font-weight:900;
+  line-height:1.8;
+  min-height:44px;
+}
+.audit-selected{
+  outline:4px solid #dc2626!important;
+  outline-offset:-4px!important;
+  position:relative;
+}
+.audit-source{
+  outline:4px solid #16a34a!important;
+  outline-offset:-4px!important;
+  position:relative;
+}
+.audit-target{
+  outline:4px solid #f59e0b!important;
+  outline-offset:-4px!important;
+  position:relative;
+}
+.audit-selected::after,
+.audit-source::after,
+.audit-target::after{
+  position:absolute;
+  top:2px;
+  left:2px;
+  font-size:10px;
+  padding:1px 4px;
+  border-radius:5px;
+  color:white;
+  z-index:3;
+}
+.audit-selected::after{content:"این خانه";background:#dc2626;}
+.audit-source::after{content:"ورودی";background:#16a34a;}
+.audit-target::after{content:"اثر";background:#f59e0b;color:#111827;}
+.invoice-tools select{
+  height:34px;
+  border-radius:8px;
+  border:1px solid #94a3b8;
+  padding:4px 8px;
+  font-weight:900;
+}
+
+
+.kb-resize-handle{
+  position:absolute;
+  top:0;
+  left:0;
+  width:9px;
+  height:100%;
+  cursor:col-resize;
+  z-index:50;
+  background:rgba(37,99,235,.12);
+}
+#invoiceTable th,.pay-table th{position:relative!important;}
+#invoiceTable th:hover .kb-resize-handle,.pay-table th:hover .kb-resize-handle{background:rgba(220,38,38,.32);}
+.lira-diff-row td,.lira-diff-row .calc-cell,.lira-diff-row .unit-cell{
+  font-size:var(--invoice-font-size,14px)!important;
+  font-weight:var(--invoice-font-weight,800)!important;
+}
+
 </style>
 </head>
 <body>
@@ -735,11 +1125,19 @@ tfoot td{
       </div>
       <div class="field rate-field">
         <label>قیمت هر 1 لیر به تومان</label>
-        <input id="rate" class="num" type="text" inputmode="decimal" oninput="calculateAndSave()" onkeyup="calculateAndSave()" onchange="calculateAndSave()" placeholder="0">
+        <input id="rate" class="num center-box-input" type="text" inputmode="decimal" oninput="formatLiveInput(this);calculateAndSave()" onkeyup="calculateAndSave()" onchange="calculateAndSave()" onblur="formatFinalRate(this)" placeholder="0">
+      </div>
+      <div class="field buy-rate-field">
+        <label>قیمت خرید لیر</label>
+        <input id="buyRate" class="num center-box-input" type="text" inputmode="decimal" oninput="formatLiveInput(this);calculateAndSave()" onkeyup="calculateAndSave()" onchange="calculateAndSave()" onblur="formatFinalBuyRate(this)" placeholder="0">
+      </div>
+      <div class="field lira-diff-field">
+        <label>اختلاف خرید لیر</label>
+        <div id="buyRateDiffText" class="readonly-diff center-box-input">بدون اثر</div>
       </div>
       <div class="field">
         <label>حساب فعال</label>
-        <input id="activeAccountName" class="readonly-name" readonly placeholder="حساب جدید">
+        <input id="activeAccountName" class="readonly-name center-box-input" readonly placeholder="حساب جدید">
       </div>
     </div>
   </div>
@@ -754,6 +1152,22 @@ tfoot td{
 
 
   <div class="invoice-tools">
+
+    <div class="tool-field">
+      <label>فونت جدول</label>
+      <select id="invoiceFontFamily" onchange="applyInvoiceStyleFromControls()">
+        <option value="Tahoma">Tahoma</option>
+        <option value="Arial">Arial</option>
+        <option value="Segoe UI">Segoe UI</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Trebuchet MS">Trebuchet MS</option>
+        <option value="Calibri">Calibri</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Courier New">Courier New</option>
+        <option value="system-ui">System UI</option>
+      </select>
+    </div>
     <div class="tool-field">
       <label>اندازه فونت فاکتور</label>
       <input id="invoiceFontSize" class="num" type="number" min="10" max="22" step="1" value="14" oninput="applyInvoiceStyleFromControls()">
@@ -769,6 +1183,36 @@ tfoot td{
     <button type="button" onclick="resetInvoiceLayout()">ریست عرض و فونت</button>
   </div>
 
+
+
+  <div id="cellAuditPanel" class="cell-audit-panel">
+    روی هر خانه جدول کلیک کنید؛ خانه انتخاب‌شده و خانه‌های مرتبط مشخص می‌شوند.
+  </div>
+
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <div class="summary-label">قیمت خرید کل</div>
+      <div id="summaryBuy" class="summary-value">₺ 0</div>
+      <div id="summaryBuyTo" class="summary-sub">0 تومان</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">قیمت کل فاکتور</div>
+      <div id="summaryInvoice" class="summary-value">₺ 0</div>
+      <div id="summaryInvoiceTo" class="summary-sub">0 تومان</div>
+    </div>
+    <div class="summary-card profit-card">
+      <div class="summary-label">سود واقعی</div>
+      <div id="summaryProfit" class="summary-value">₺ 0</div>
+      <div id="summaryProfitTo" class="summary-sub">0 تومان</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">سود/زیان خرید لیر</div>
+      <div id="summaryLiraDiff" class="summary-value">₺ 0</div>
+      <div id="summaryLiraDiffTo" class="summary-sub">0 تومان</div>
+    </div>
+  </div>
+
   <div class="table-wrap invoice-font-scope">
     <table id="invoiceTable" class="resizable-table">
       <thead>
@@ -779,6 +1223,8 @@ tfoot td{
           <th class="col-percent">درصد سود<br>%</th>
           <th class="col-money">مبلغ سود<br>₺</th>
           <th class="col-money">قیمت نهایی<br>₺</th>
+          <th class="col-money">هزینه دریافت<br>₺</th>
+          <th class="col-control">هزینه ارسال<br>تومان</th>
           <th class="col-date">تاریخ خرید</th>
           <th class="col-date">تاریخ ارسال</th>
           <th class="col-control">تومان کنترل</th>
@@ -794,6 +1240,8 @@ tfoot td{
           <td>---</td>
           <td><span id="sumProfit" class="calc-cell">₺ 0</span></td>
           <td><span id="sumBuyPlusProfit" class="calc-cell">₺ 0</span></td>
+          <td><span id="sumPickupLira" class="calc-cell">₺ 0</span></td>
+          <td><span id="sumShippingBlue" class="calc-cell">0 تومان</span></td>
           <td colspan="4" class="unit-cell"></td>
         </tr>
         <tr class="toman-row">
@@ -803,43 +1251,22 @@ tfoot td{
           <td>---</td>
           <td><span id="sumProfitTo" class="calc-cell">0 تومان</span></td>
           <td><span id="sumBuyPlusProfitTo" class="calc-cell">0 تومان</span></td>
-          <td colspan="4" class="unit-cell"></td>
+          <td><span id="sumPickupLiraTo" class="calc-cell">0 تومان</span></td>
+          <td colspan="5" class="unit-cell"></td>
+        </tr>
+        <tr class="lira-diff-row">
+          <td></td>
+          <td>سود/زیان خرید لیر</td>
+          <td><span id="liraDiffProfitTo" class="calc-cell">0 تومان</span></td>
+          <td colspan="2" class="unit-cell compact-formula">جمع نهایی لیر × اختلاف هر لیر</td>
+          <td colspan="7" class="ghost-cell"></td>
         </tr>
         <tr class="extra-profit-row">
           <td></td>
           <td>سود مازاد</td>
-          <td>---</td>
-          <td>---</td>
           <td><input id="extraProfit" class="num extra-profit-input" type="text" inputmode="decimal" placeholder="0" oninput="formatLiveInput(this);calculateAndSave()" onblur="formatFinalExtraProfit(this)"></td>
-          <td><span id="invoiceWithExtra" class="calc-cell">₺ 0</span></td>
-          <td colspan="4" class="unit-cell">لیر</td>
-        </tr>
-        <tr class="toman-row">
-          <td></td>
-          <td>سود مازاد تومان</td>
-          <td>---</td>
-          <td>---</td>
-          <td><span id="extraProfitTo" class="calc-cell">0 تومان</span></td>
-          <td><span id="invoiceWithExtraTo" class="calc-cell">0 تومان</span></td>
-          <td colspan="4" class="unit-cell">تومان</td>
-        </tr>
-        <tr class="final-profit-row">
-          <td></td>
-          <td>سود کل نهایی</td>
-          <td>---</td>
-          <td>---</td>
-          <td><span id="finalProfit" class="calc-cell">₺ 0</span></td>
-          <td><span id="finalInvoice" class="calc-cell">₺ 0</span></td>
-          <td colspan="4" class="unit-cell">سود فاکتور + سود مازاد</td>
-        </tr>
-        <tr class="final-invoice-row">
-          <td></td>
-          <td>معادل نهایی تومان</td>
-          <td>---</td>
-          <td>---</td>
-          <td><span id="finalProfitTo" class="calc-cell">0 تومان</span></td>
-          <td><span id="finalInvoiceTo" class="calc-cell">0 تومان</span></td>
-          <td colspan="4" class="unit-cell"></td>
+          <td colspan="2" class="unit-cell invoice-extra-cell compact-value"><span id="invoiceWithExtra" class="calc-cell">₺ 0</span><span class="inline-unit">لیر</span></td>
+          <td colspan="7" class="ghost-cell"></td>
         </tr>
       </tfoot>
     </table>
@@ -853,6 +1280,7 @@ tfoot td{
           <tr>
             <th style="width:80px">ردیف</th>
             <th style="width:180px">مبلغ پرداخت‌شده ₺</th>
+            <th style="width:190px">پرداخت تومان</th>
             <th style="width:170px">تاریخ پرداخت</th>
             <th style="width:190px">معادل تومان</th>
           </tr>
@@ -861,19 +1289,19 @@ tfoot td{
         <tfoot>
           <tr class="pay-row">
             <td class="add-cell" onclick="addPayment()">+ پرداخت</td>
-            <td colspan="2">جمع پرداخت‌شده</td>
+            <td colspan="3">جمع پرداخت‌شده</td>
             <td><span id="paidTotal" class="calc-cell">₺ 0</span></td>
           </tr>
           <tr class="toman-row">
-            <td colspan="3">پرداخت‌شده تومان</td>
+            <td colspan="4">پرداخت‌شده تومان</td>
             <td><span id="paidTo" class="calc-cell">0 تومان</span></td>
           </tr>
           <tr class="remain-row" id="remainRow">
-            <td colspan="3" id="remainLabel">مبلغ مانده</td>
+            <td colspan="4" id="remainLabel">مبلغ مانده</td>
             <td><span id="remain" class="calc-cell">₺ 0</span></td>
           </tr>
           <tr class="toman-row" id="remainToRow">
-            <td colspan="3" id="remainToLabel">مانده تومان</td>
+            <td colspan="4" id="remainToLabel">مانده تومان</td>
             <td><span id="remainTo" class="calc-cell">0 تومان</span></td>
           </tr>
         </tfoot>
@@ -947,8 +1375,8 @@ let isLoading=false;
 
 
 function newId(){return "acc_"+Date.now()+"_"+Math.floor(Math.random()*100000)}
-function emptyRow(i){return{no:i,product:"",buy:"",profitPercent:"",buyDateRow:"",sendDateRow:"",controlToman:""}}
-function emptyPayment(i){return{no:i,amount:"",date:""}}
+function emptyRow(i){return{no:i,product:"",buy:"",profitPercent:"",pickupLira:"",shippingToman:"",buyDateRow:"",sendDateRow:"",controlToman:""}}
+function emptyPayment(i){return{no:i,amount:"",amountToman:"",date:""}}
 function cleanNumberString(v){
   let s=String(v||"");
   const fa="۰۱۲۳۴۵۶۷۸۹", ar="٠١٢٣٤٥٦٧٨٩";
@@ -974,13 +1402,15 @@ function moneyLira(n){return "₺ "+fmt(n)}
 function moneyToman(n){return fmt(n)+" تومان"}
 function signedMoneyLira(n){
   n=Number(n||0);
-  if(n<0)return "+ ₺ "+fmt(Math.abs(n));
-  return "₺ "+fmt(n);
+  if(n<0)return "- ₺ "+fmt(Math.abs(n));
+  if(n>0)return "+ ₺ "+fmt(n);
+  return "₺ 0";
 }
 function signedMoneyToman(n){
   n=Number(n||0);
-  if(n<0)return "+ "+fmt(Math.abs(n))+" تومان";
-  return fmt(n)+" تومان";
+  if(n<0)return "- "+fmt(Math.abs(n))+" تومان";
+  if(n>0)return "+ "+fmt(n)+" تومان";
+  return "0 تومان";
 }
 function formatLiveInput(el){
   const raw=cleanNumberString(el.value);
@@ -993,17 +1423,19 @@ function formatLiveInput(el){
 }
 function formatFinalInput(el){if(el.value.trim()==="")return;el.value=fmt(toNumber(el.value))}
 function escapeHtml(value){return String(value||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;")}
-function defaultAccount(){return{firstName:"",lastName:"",buyDate:"",sendDate:"",rate:"",extraProfit:"",activeRows:1,rows:[emptyRow(1)],payments:[emptyPayment(1)]}}
+function defaultAccount(){return{firstName:"",lastName:"",buyDate:"",sendDate:"",rate:"",buyRate:"",extraProfit:"",activeRows:1,rows:[emptyRow(1)],payments:[emptyPayment(1)]}}
 function normalizeAccount(acc){
   if(!acc.rows)acc.rows=[emptyRow(1)];
   if(!acc.activeRows)acc.activeRows=acc.rows.length||1;
   while(acc.rows.length<acc.activeRows)acc.rows.push(emptyRow(acc.rows.length+1));
-  acc.rows.forEach(r=>{if(r.controlToman===undefined)r.controlToman="";});
+  acc.rows.forEach(r=>{if(r.pickupLira===undefined)r.pickupLira=""; if(r.shippingToman===undefined)r.shippingToman=""; if(r.controlToman===undefined)r.controlToman="";});
   if(!acc.payments){
     acc.payments=[];
     if(acc.paid||acc.paidDate)acc.payments.push({no:1,amount:acc.paid||"",date:acc.paidDate||""});
   }
   if(!acc.payments.length)acc.payments.push(emptyPayment(1));
+  acc.payments.forEach(p=>{if(p.amountToman===undefined)p.amountToman="";});
+  if(acc.buyRate===undefined)acc.buyRate="";
   if(acc.extraProfit===undefined)acc.extraProfit="";
   return acc;
 }
@@ -1040,6 +1472,8 @@ function loadCurrentAccount(){
   document.getElementById("buyDate").value=acc.buyDate||"";
   document.getElementById("sendDate").value=acc.sendDate||"";
   document.getElementById("rate").value=acc.rate||"";
+  const buyRateEl=document.getElementById("buyRate");
+  if(buyRateEl)buyRateEl.value=acc.buyRate||"";
   const extraEl=document.getElementById("extraProfit");
   if(extraEl)extraEl.value=acc.extraProfit||"";
   document.getElementById("activeRows").value=activeRows;
@@ -1057,6 +1491,7 @@ function saveCurrentAccount(){
   acc.buyDate=document.getElementById("buyDate").value;
   acc.sendDate=document.getElementById("sendDate").value;
   acc.rate=document.getElementById("rate").value;
+  acc.buyRate=document.getElementById("buyRate")?document.getElementById("buyRate").value:"";
   acc.extraProfit=document.getElementById("extraProfit")?document.getElementById("extraProfit").value:"";
   acc.activeRows=activeRows;
   acc.rows=rows;
@@ -1107,9 +1542,10 @@ function renderRows(){
   tbody.innerHTML="";
   for(let i=0;i<activeRows;i++){
     if(!rows[i])rows[i]=emptyRow(i+1);
+    if(rows[i].pickupLira===undefined)rows[i].pickupLira="";
     if(rows[i].controlToman===undefined)rows[i].controlToman="";
     rows[i].no=i+1;
-    const r=rows[i], buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
+    const r=rows[i], buy=toNumber(r.buy), percent=toNumber(r.profitPercent), pickupLira=toNumber(r.pickupLira);
     const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
     const tr=document.createElement("tr");
     tr.innerHTML=`
@@ -1119,6 +1555,8 @@ function renderRows(){
       <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.profitPercent)}" oninput="updateCell(${i},'profitPercent',this.value)" onblur="formatPercentCell(${i},this)"></td>
       <td><span id="profitAmount_${i}" class="calc-cell">${moneyLira(profitAmount)}</span></td>
       <td><span id="buyPlusProfit_${i}" class="calc-cell">${moneyLira(buyPlusProfit)}</span></td>
+      <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.pickupLira||'')}" oninput="formatLiveInput(this);updateCell(${i},'pickupLira',this.value)" onblur="formatFinalCell(${i},'pickupLira',this)"></td>
+      <td><input class="num shipping-input" type="text" inputmode="decimal" value="${escapeHtml(r.shippingToman||'')}" oninput="formatLiveInput(this);updateCell(${i},'shippingToman',this.value)" onblur="formatFinalCell(${i},'shippingToman',this)"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(r.buyDateRow)}" oninput="updateCell(${i},'buyDateRow',this.value)" title="تاریخ"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(r.sendDateRow)}" oninput="updateCell(${i},'sendDateRow',this.value)" title="تاریخ"></td>
       <td><input class="num control-toman-input" type="text" inputmode="decimal" value="${escapeHtml(r.controlToman||'')}" oninput="formatLiveInput(this);updateCell(${i},'controlToman',this.value)" onblur="formatFinalCell(${i},'controlToman',this)"></td>
@@ -1138,19 +1576,51 @@ function renderPayments(){
     tr.className="pay-row";
     tr.innerHTML=`
       <td class="row-no">${i+1}</td>
-      <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(p.amount)}" oninput="formatLiveInput(this);updatePayment(${i},'amount',this.value)" onblur="formatFinalPayment(${i},this)"></td>
+      <td><input id="paymentAmount_${i}" class="num" type="text" inputmode="decimal" value="${escapeHtml(p.amount)}" oninput="formatLiveInput(this);updatePayment(${i},'amount',this.value)" onblur="formatFinalPayment(${i},this)"></td>
+      <td><input class="num payment-toman-input" type="text" inputmode="decimal" value="${escapeHtml(p.amountToman||'')}" oninput="formatLiveInput(this);updatePaymentToman(${i},this.value)" onblur="formatFinalPaymentToman(${i},this)"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(p.date)}" oninput="updatePayment(${i},'date',this.value)" title="تاریخ"></td>
       <td><span id="paymentTo_${i}" class="calc-cell">0 تومان</span></td>`;
     tbody.appendChild(tr);
   }
 }
 function updateCell(index,key,value){if(!rows[index])rows[index]=emptyRow(index+1);rows[index][key]=value;calculateAndSave()}
-function updatePayment(index,key,value){if(!payments[index])payments[index]=emptyPayment(index+1);payments[index][key]=value;calculateAndSave()}
+function updatePayment(index,key,value){
+  if(!payments[index])payments[index]=emptyPayment(index+1);
+  payments[index][key]=value;
+  if(key==="amount"){payments[index].amountToman="";}
+  calculateAndSave();
+}
+function updatePaymentToman(index,value){
+  if(!payments[index])payments[index]=emptyPayment(index+1);
+  payments[index].amountToman=value;
+  const rate=toNumber(document.getElementById("rate")?document.getElementById("rate").value:"");
+  if(rate>0){
+    payments[index].amount=fmt(toNumber(value)/rate);
+    const el=document.getElementById("paymentAmount_"+index);
+    if(el)el.value=payments[index].amount;
+  }
+  calculateAndSave();
+}
 function formatFinalCell(index,key,el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));rows[index][key]=el.value;calculateAndSave()}}
 function formatPercentCell(index,el){if(el.value.trim()!==""){const n=toNumber(el.value);el.value=fmtPct(n);rows[index].profitPercent=el.value;calculateAndSave()}}
-function formatFinalPayment(index,el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));payments[index].amount=el.value;calculateAndSave()}}
+function formatFinalPayment(index,el){
+  if(el.value.trim()!==""){
+    el.value=fmt(toNumber(el.value));
+    payments[index].amount=el.value;
+    payments[index].amountToman="";
+    calculateAndSave();
+  }
+}
+function formatFinalPaymentToman(index,el){
+  if(el.value.trim()!==""){
+    el.value=fmt(toNumber(el.value));
+    updatePaymentToman(index,el.value);
+  }
+}
 function formatFinalControl(el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));calculateAndSave()}}
 function formatFinalExtraProfit(el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));calculateAndSave()}}
+function formatFinalRate(el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));calculateAndSave()}}
+function formatFinalBuyRate(el){if(el.value.trim()!==""){el.value=fmt(toNumber(el.value));calculateAndSave()}}
 function addRow(){
   activeRows+=1;
   if(activeRows>300)activeRows=300;
@@ -1166,88 +1636,204 @@ function addPayment(){
 }
 function totalsFor(acc){
   acc=normalizeAccount(acc);
-  let sumBuy=0,sumProfit=0,baseTotal=0;
-  const count=acc.activeRows||acc.rows.length||1;
-  for(let i=0;i<count;i++){
-    const r=acc.rows[i]||emptyRow(i+1), buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
-    const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
-    sumBuy+=buy;sumProfit+=profitAmount;baseTotal+=buyPlusProfit;
-  }
+  const rate=toNumber(acc.rate);
+  const buyRate=toNumber(acc.buyRate);
   const extraProfit=toNumber(acc.extraProfit);
-  const finalProfit=sumProfit+extraProfit;
-  const total=baseTotal+extraProfit;
+  const count=acc.activeRows||acc.rows.length||1;
+
+  let sumBuy=0;
+  let sumProfit=0;
+  let sumRowFinal=0;
+  let sumPickupLira=0;
+  let sumShippingTo=0;
+  let sumShippingLira=0;
+
+  for(let i=0;i<count;i++){
+    const r=acc.rows[i]||emptyRow(i+1);
+    const buy=toNumber(r.buy);
+    const percent=toNumber(r.profitPercent);
+    const pickupLira=toNumber(r.pickupLira);
+    const shippingTo=toNumber(r.shippingToman);
+
+    const profitAmount=buy*percent/100;
+    const rowFinal=buy+profitAmount;
+    const shippingLira=rate>0 ? shippingTo/rate : 0;
+
+    sumBuy+=buy;
+    sumProfit+=profitAmount;
+    sumRowFinal+=rowFinal;
+    sumPickupLira+=pickupLira;
+    sumShippingTo+=shippingTo;
+    sumShippingLira+=shippingLira;
+  }
+
+  const invoiceSummary=sumRowFinal;
+  const invoiceForPayment=sumRowFinal+sumShippingLira+extraProfit;
+
+  const diffRate=(buyRate>0 && rate>0) ? (rate-buyRate) : 0;
+  const diffTo=invoiceSummary*diffRate;
+  const diffLira=rate>0 ? diffTo/rate : 0;
+  const realProfit=sumProfit+diffLira+extraProfit;
+
   let paid=0;
-  (acc.payments||[]).forEach(p=>paid+=toNumber(p.amount));
-  const remain=total-paid, rate=toNumber(acc.rate);
-  return{sumBuy,sumProfit,extraProfit,finalProfit,baseTotal,total,paid,remain,rate,totalTo:total*rate,paidTo:paid*rate,remainTo:remain*rate};
+  (acc.payments||[]).forEach(p=>{
+    const paidToman=toNumber(p.amountToman);
+    if(paidToman>0 && rate>0)paid+=paidToman/rate;
+    else paid+=toNumber(p.amount);
+  });
+
+  const remain=invoiceForPayment-paid;
+
+  return{
+    sumBuy,sumProfit,sumRowFinal,sumPickupLira,sumShippingTo,sumShippingLira,
+    extraProfit,invoiceSummary,invoiceForPayment,
+    diffRate,diffTo,diffLira,realProfit,
+    total:invoiceForPayment,paid,remain,rate,buyRate,
+    totalTo:invoiceForPayment*rate,paidTo:paid*rate,remainTo:remain*rate
+  };
 }
+
 function calculate(){
   const acc=currentAccount();
-  acc.rows=rows;acc.payments=payments;acc.activeRows=activeRows;
+  acc.rows=rows;
+  acc.payments=payments;
+  acc.activeRows=activeRows;
   acc.firstName=document.getElementById("firstName").value;
   acc.lastName=document.getElementById("lastName").value;
   acc.rate=document.getElementById("rate").value;
+  acc.buyRate=document.getElementById("buyRate")?document.getElementById("buyRate").value:"";
   acc.extraProfit=document.getElementById("extraProfit")?document.getElementById("extraProfit").value:"";
   acc.buyDate=document.getElementById("buyDate").value;
   acc.sendDate=document.getElementById("sendDate").value;
-  let sumBuy=0,sumProfit=0,sumBuyPlusProfit=0;
-  for(let i=0;i<activeRows;i++){
-    const r=rows[i]||emptyRow(i+1), buy=toNumber(r.buy), percent=toNumber(r.profitPercent);
-    const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
-    sumBuy+=buy;sumProfit+=profitAmount;sumBuyPlusProfit+=buyPlusProfit;
-    const pa=document.getElementById("profitAmount_"+i), bp=document.getElementById("buyPlusProfit_"+i);
-    const cl=document.getElementById("controlLira_"+i);
-    if(cl)cl.textContent=controlLiraText(r);
-    if(pa)pa.textContent=moneyLira(profitAmount);
-    if(bp)bp.textContent=moneyLira(buyPlusProfit);
-  }
+
   const rate=toNumber(document.getElementById("rate").value);
+  const buyRate=toNumber(document.getElementById("buyRate")?document.getElementById("buyRate").value:"");
   const extraProfit=toNumber(document.getElementById("extraProfit")?document.getElementById("extraProfit").value:"");
-  const finalProfit=sumProfit+extraProfit;
-  const finalInvoice=sumBuyPlusProfit+extraProfit;
+
+  let sumBuy=0;
+  let sumProfit=0;
+  let sumRowFinal=0;
+  let sumPickupLira=0;
+  let sumShippingTo=0;
+  let sumShippingLira=0;
+
+  for(let i=0;i<activeRows;i++){
+    const r=rows[i]||emptyRow(i+1);
+    const buy=toNumber(r.buy);
+    const percent=toNumber(r.profitPercent);
+    const pickupLira=toNumber(r.pickupLira);
+    const shippingTo=toNumber(r.shippingToman);
+
+    const profitAmount=buy*percent/100;
+    const rowFinal=buy+profitAmount;
+    const shippingLira=rate>0 ? shippingTo/rate : 0;
+
+    sumBuy+=buy;
+    sumProfit+=profitAmount;
+    sumRowFinal+=rowFinal;
+    sumPickupLira+=pickupLira;
+    sumShippingTo+=shippingTo;
+    sumShippingLira+=shippingLira;
+
+    const pa=document.getElementById("profitAmount_"+i);
+    const bp=document.getElementById("buyPlusProfit_"+i);
+    const cl=document.getElementById("controlLira_"+i);
+
+    if(pa)pa.textContent=moneyLira(Math.round(profitAmount));
+    if(bp)bp.textContent=moneyLira(Math.round(rowFinal));
+    if(cl)cl.textContent=controlLiraText(r);
+  }
+
+  const invoiceSummary=sumRowFinal+sumPickupLira;                    // قیمت کل فاکتور = جمع قیمت نهایی + جمع هزینه دریافت
+  const invoiceForPayment=invoiceSummary+sumShippingLira+extraProfit;  // برای پرداخت/مانده
+  const diffRate=(buyRate>0 && rate>0) ? (rate-buyRate) : 0;
+  const diffTo=invoiceSummary*diffRate;
+  const diffLira=rate>0 ? diffTo/rate : 0;
+  const realProfit=sumProfit+diffLira+extraProfit;
+
+  const diffBox=document.getElementById("buyRateDiffText");
+  if(diffBox){
+    if(diffRate>0)diffBox.textContent="سود هر لیر "+fmt(diffRate)+" تومان";
+    else if(diffRate<0)diffBox.textContent="زیان هر لیر "+fmt(Math.abs(diffRate))+" تومان";
+    else diffBox.textContent="بدون اثر";
+  }
+
   let paid=0;
   payments.forEach((p,i)=>{
-    paid+=toNumber(p.amount);
+    const lira=toNumber(p.amount);
+    const toman=toNumber(p.amountToman);
+    const paidLira=(toman>0 && rate>0) ? toman/rate : lira;
+    paid+=paidLira;
+
     const cell=document.getElementById("paymentTo_"+i);
-    if(cell)cell.textContent=moneyToman(toNumber(p.amount)*rate);
+    if(cell)cell.textContent=moneyToman(toman>0 ? toman : paidLira*rate);
   });
-  const remain=finalInvoice-paid;
-  document.getElementById("sumBuy").textContent=moneyLira(sumBuy);
-  document.getElementById("sumProfit").textContent=moneyLira(sumProfit);
-  document.getElementById("sumBuyPlusProfit").textContent=moneyLira(sumBuyPlusProfit);
+
+  const remain=invoiceForPayment-paid;
+
+  // ردیف آبی جدول
+  document.getElementById("sumBuy").textContent=moneyLira(Math.round(sumBuy));
+  document.getElementById("sumProfit").textContent=moneyLira(Math.round(sumProfit));
+  document.getElementById("sumBuyPlusProfit").textContent=moneyLira(Math.round(sumRowFinal));
+  document.getElementById("sumPickupLira").textContent=moneyLira(Math.round(sumPickupLira));
   document.getElementById("sumBuyTo").textContent=moneyToman(sumBuy*rate);
   document.getElementById("sumProfitTo").textContent=moneyToman(sumProfit*rate);
-  document.getElementById("sumBuyPlusProfitTo").textContent=moneyToman(sumBuyPlusProfit*rate);
-  document.getElementById("extraProfitTo").textContent=moneyToman(extraProfit*rate);
-  document.getElementById("invoiceWithExtra").textContent=moneyLira(finalInvoice);
-  document.getElementById("invoiceWithExtraTo").textContent=moneyToman(finalInvoice*rate);
-  document.getElementById("finalProfit").textContent=moneyLira(finalProfit);
-  document.getElementById("finalProfitTo").textContent=moneyToman(finalProfit*rate);
-  document.getElementById("finalInvoice").textContent=moneyLira(finalInvoice);
-  document.getElementById("finalInvoiceTo").textContent=moneyToman(finalInvoice*rate);
-  document.getElementById("paidTotal").textContent=moneyLira(paid);
-  document.getElementById("paidTo").textContent=moneyToman(paid*rate);
+  document.getElementById("sumBuyPlusProfitTo").textContent=moneyToman(sumRowFinal*rate);
+  document.getElementById("sumPickupLiraTo").textContent=moneyToman(sumPickupLira*rate);
 
-  const remainRow=document.getElementById("remainRow");
-  const remainToRow=document.getElementById("remainToRow");
+  const shipBlue=document.getElementById("sumShippingBlue");
+  if(shipBlue)shipBlue.textContent=moneyToman(sumShippingTo);
+
+  // ردیف سود/زیان خرید لیر: فقط یک عدد کنار توضیح
+  const ldpTo=document.getElementById("liraDiffProfitTo");
+  if(ldpTo)ldpTo.textContent=signedMoneyToman(diffTo);
+
+  // سود مازاد و معادل سود
+  const extraProfitTo=document.getElementById("extraProfitTo");
+  if(extraProfitTo)extraProfitTo.textContent=moneyToman(extraProfit*rate);
+
+  const invoiceWithExtra=document.getElementById("invoiceWithExtra");
+  if(invoiceWithExtra)invoiceWithExtra.textContent=moneyLira(Math.round(invoiceForPayment));
+
+  const invoiceWithExtraTo=document.getElementById("invoiceWithExtraTo");
+  if(invoiceWithExtraTo)invoiceWithExtraTo.textContent=moneyToman(invoiceForPayment*rate);
+
+  const finalProfitTo=document.getElementById("finalProfitTo");
+  if(finalProfitTo)finalProfitTo.textContent=moneyToman(realProfit*rate);
+
+  // خلاصه بالا
+  const sb=document.getElementById("summaryBuy");
+  if(sb)sb.textContent=moneyLira(Math.round(sumBuy));
+  const sbt=document.getElementById("summaryBuyTo");
+  if(sbt)sbt.textContent=moneyToman(sumBuy*rate);
+
+  const si=document.getElementById("summaryInvoice");
+  if(si)si.textContent=moneyLira(Math.round(invoiceSummary));
+  const sit=document.getElementById("summaryInvoiceTo");
+  if(sit)sit.textContent=moneyToman(invoiceSummary*rate);
+
+  const sp=document.getElementById("summaryProfit");
+  if(sp)sp.textContent=moneyLira(Math.round(realProfit));
+  const spt=document.getElementById("summaryProfitTo");
+  if(spt)spt.textContent=moneyToman(realProfit*rate);
+
+  const sld=document.getElementById("summaryLiraDiff");
+  if(sld)sld.textContent=moneyLira(Math.round(diffLira));
+  const sldt=document.getElementById("summaryLiraDiffTo");
+  if(sldt)sldt.textContent=signedMoneyToman(diffTo);
+
+  // پرداخت و مانده
+  document.getElementById("paidTotal").textContent=moneyLira(Math.round(paid));
+  document.getElementById("paidTo").textContent=moneyToman(paid*rate);
+  document.getElementById("remain").textContent=moneyLira(Math.round(remain));
+  document.getElementById("remainTo").textContent=moneyToman(remain*rate);
+
   const remainLabel=document.getElementById("remainLabel");
   const remainToLabel=document.getElementById("remainToLabel");
+  if(remainLabel)remainLabel.textContent=remain<0?"اضافه پرداخت / طلب مشتری":"مبلغ مانده";
+  if(remainToLabel)remainToLabel.textContent=remain<0?"طلب مشتری تومان":"مانده تومان";
 
-  if(remain<0){
-    remainRow.className="credit-row";
-    remainToRow.className="toman-row";
-    remainLabel.textContent="اضافه پرداخت / طلب مشتری";
-    remainToLabel.textContent="طلب مشتری تومان";
-    document.getElementById("remain").textContent=signedMoneyLira(remain);
-    document.getElementById("remainTo").textContent=signedMoneyToman(remain*rate);
-  }else{
-    remainRow.className="remain-row";
-    remainToRow.className="toman-row";
-    remainLabel.textContent="مبلغ مانده";
-    remainToLabel.textContent="مانده تومان";
-    document.getElementById("remain").textContent=moneyLira(remain);
-    document.getElementById("remainTo").textContent=moneyToman(remain*rate);
-  }
+  refreshAccountsList();
 }
 function calculateAndSave(){calculate();saveCurrentAccount()}
 function statusClass(t){
@@ -1301,7 +1887,7 @@ function downloadBackup(){
   saveCurrentAccount();
   const now=new Date();
   const stamp=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+"_"+String(now.getHours()).padStart(2,"0")+"-"+String(now.getMinutes()).padStart(2,"0");
-  const payload={app:"Kel-bek",version:"professional-invoice-v13-excel-font-controls",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
+  const payload={app:"Kel-bek",version:"professional-invoice-v14-shipping-liradiff",createdAt:now.toISOString(),storageKey:STORAGE_KEY,data:db};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
@@ -1344,17 +1930,19 @@ function getLayout(){
 function saveLayout(layout){
   localStorage.setItem(LAYOUT_KEY,JSON.stringify(layout||{}));
 }
+
 function darknessToColor(v){
   v=Math.max(0,Math.min(100,Number(v||95)));
-  const light=120, dark=17;
-  const n=Math.round(light-(light-dark)*(v/100));
-  return `rgb(${n},${n+7},${n+16})`;
+  const n=Math.round(190-(175*(v/100)));
+  return "rgb("+n+","+n+","+n+")";
 }
 function applyInvoiceStyleFromControls(){
   const layout=getLayout();
+  const ff=document.getElementById("invoiceFontFamily")?document.getElementById("invoiceFontFamily").value:(layout.fontFamily||"Tahoma");
   const fs=document.getElementById("invoiceFontSize")?Number(document.getElementById("invoiceFontSize").value||14):14;
   const fw=document.getElementById("invoiceFontWeight")?Number(document.getElementById("invoiceFontWeight").value||800):800;
   const dk=document.getElementById("invoiceDarkness")?Number(document.getElementById("invoiceDarkness").value||95):95;
+  layout.fontFamily=ff;
   layout.fontSize=fs;
   layout.fontWeight=fw;
   layout.darkness=dk;
@@ -1363,20 +1951,39 @@ function applyInvoiceStyleFromControls(){
 }
 function applyInvoiceLayout(){
   const layout=getLayout();
+  const ff=layout.fontFamily||"Tahoma";
   const fs=layout.fontSize||14;
   const fw=layout.fontWeight||800;
   const dk=layout.darkness===undefined?95:layout.darkness;
+  const color=darknessToColor(dk);
+
+  document.documentElement.style.setProperty("--invoice-font-family",ff);
   document.documentElement.style.setProperty("--invoice-font-size",fs+"px");
   document.documentElement.style.setProperty("--invoice-font-weight",String(fw));
-  document.documentElement.style.setProperty("--invoice-text-darkness",darknessToColor(dk));
+  document.documentElement.style.setProperty("--invoice-text-darkness",color);
+
+  const ffEl=document.getElementById("invoiceFontFamily");
   const fsEl=document.getElementById("invoiceFontSize");
   const fwEl=document.getElementById("invoiceFontWeight");
   const dkEl=document.getElementById("invoiceDarkness");
+  if(ffEl)ffEl.value=ff;
   if(fsEl)fsEl.value=fs;
   if(fwEl)fwEl.value=fw;
   if(dkEl)dkEl.value=dk;
+
+  // اعمال مستقیم برای غلبه بر CSSهای قبلی
+  document.querySelectorAll(".invoice-font-scope td,.invoice-font-scope td *,.invoice-font-scope input,.payment-box td,.payment-box td *,.payment-box input").forEach(el=>{
+    if(el.closest(".summary-strip"))return;
+    el.style.fontFamily=ff;
+    el.style.fontSize=fs+"px";
+    el.style.fontWeight=String(fw);
+    el.style.color=color;
+    el.style.webkitTextFillColor=color;
+  });
+
   applyColumnWidths();
 }
+
 function applyColumnWidths(){
   const table=document.getElementById("invoiceTable");
   if(!table)return;
@@ -1440,9 +2047,150 @@ function resetInvoiceLayout(){
   }
   applyInvoiceLayout();
 }
+
+function clearAuditMarks(){
+  document.querySelectorAll(".audit-selected,.audit-source,.audit-target").forEach(el=>{
+    el.classList.remove("audit-selected","audit-source","audit-target");
+  });
+}
+function getInvoiceCell(rowIndex,colIndex){
+  const trs=document.querySelectorAll("#invoiceTable tbody tr");
+  const tr=trs[rowIndex];
+  if(!tr)return null;
+  return tr.children[colIndex]||null;
+}
+function markInvoice(rowIndex,cols,cls){
+  cols.forEach(c=>{
+    const td=getInvoiceCell(rowIndex,c);
+    if(td)td.classList.add(cls);
+  });
+}
+function panelText(txt){
+  const p=document.getElementById("cellAuditPanel");
+  if(p)p.textContent=txt;
+}
+function auditInvoiceCell(td){
+  clearAuditMarks();
+  td.classList.add("audit-selected");
+
+  const tr=td.closest("tr");
+  const bodyRows=Array.from(document.querySelectorAll("#invoiceTable tbody tr"));
+  const rowIndex=bodyRows.indexOf(tr);
+  const col=Array.from(tr.children).indexOf(td);
+  const rate=toNumber(document.getElementById("rate")?document.getElementById("rate").value:0);
+
+  if(rowIndex>=0){
+    const r=rows[rowIndex]||emptyRow(rowIndex+1);
+    const buy=toNumber(r.buy);
+    const percent=toNumber(r.profitPercent);
+    const pickupLira=toNumber(r.pickupLira);
+    const shippingTo=toNumber(r.shippingToman);
+    const profit=buy*percent/100;
+    const rowFinal=buy+profit;
+    const shippingLira=rate>0?shippingTo/rate:0;
+
+    // column index:
+    // 0 row, 1 product, 2 buy, 3 percent, 4 profit, 5 final, 6 pickup, 7 shipping, 8 buyDate, 9 sendDate, 10 controlToman, 11 controlLira
+    if(col===2){
+      markInvoice(rowIndex,[4,5], "audit-target");
+      panelText(`قیمت خرید این ردیف = ${fmt(buy)} لیر. اثر: سود = ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} و قیمت نهایی ردیف = ${fmt(rowFinal)}.`);
+    }else if(col===3){
+      markInvoice(rowIndex,[2], "audit-source");
+      markInvoice(rowIndex,[4,5], "audit-target");
+      panelText(`درصد سود = ${fmt(percent)}٪. وابسته به قیمت خرید همین ردیف است. فرمول: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
+    }else if(col===4){
+      markInvoice(rowIndex,[2,3], "audit-source");
+      markInvoice(rowIndex,[5], "audit-target");
+      panelText(`مبلغ سود از قیمت خرید و درصد همین ردیف می‌آید: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
+    }else if(col===5){
+      markInvoice(rowIndex,[2,4], "audit-source");
+      panelText(`قیمت نهایی ردیف = قیمت خرید + مبلغ سود = ${fmt(buy)} + ${fmt(profit)} = ${fmt(rowFinal)} لیر. هزینه دریافت و هزینه ارسال داخل این خانه نیست.`);
+    }else if(col===6){
+      panelText(`هزینه دریافت (پیک) = ${fmt(pickupLira)} لیر. به جمع کل فاکتور و معادل تومان اضافه می‌شود اما در درصد سود ردیف وارد نمی‌شود.`);
+    }else if(col===7){
+      panelText(`هزینه ارسال تومان = ${fmt(shippingTo)}. تبدیل آن به لیر: ${fmt(shippingTo)} ÷ ${fmt(rate)} = ${fmt(shippingLira)} لیر. فقط در جمع کل پرداخت اضافه می‌شود، نه در سود ردیف.`);
+    }else if(col===10){
+      panelText("تومان کنترل: خانه کنترل دستی است و در محاسبه اتوماتیک اثر ندارد.");
+    }else if(col===11){
+      panelText("لیر کنترل: خانه کنترل دستی است و در محاسبه اتوماتیک اثر ندارد.");
+    }else{
+      panelText("این خانه عدد محاسباتی اصلی نیست یا فقط نمایش/ورودی متنی است.");
+    }
+    return;
+  }
+
+  // footer rows
+  if(tr.classList.contains("sum-row")){
+    panelText("ردیف آبی جمع: جمع قیمت خرید، جمع سود، جمع قیمت نهایی ردیف‌ها و جمع هزینه ارسال را نشان می‌دهد.");
+    return;
+  }
+  if(tr.classList.contains("toman-row")){
+    panelText("ردیف تومان: هر عدد لیر ضربدر نرخ زرد شده است.");
+    return;
+  }
+  if(tr.classList.contains("lira-diff-row")){
+    panelText("سود/زیان خرید لیر: قیمت کل فاکتور × اختلاف نرخ روز و قیمت خرید لیر.");
+    return;
+  }
+  if(tr.classList.contains("extra-profit-row")){
+    panelText("سود مازاد: مبلغ دستی است و به قیمت کل فاکتور و سود واقعی اضافه می‌شود.");
+    return;
+  }
+  
+  if(tr.classList.contains("final-invoice-row")){
+    return;
+  }
+  panelText("این خانه فرمول ثبت‌شده ندارد.");
+}
+function auditPaymentCell(td){
+  clearAuditMarks();
+  td.classList.add("audit-selected");
+  const tr=td.closest("tr");
+  const rowsPay=Array.from(document.querySelectorAll("#paymentsBody tr"));
+  const rowIndex=rowsPay.indexOf(tr);
+  const col=Array.from(tr.children).indexOf(td);
+  const rate=toNumber(document.getElementById("rate")?document.getElementById("rate").value:0);
+  if(rowIndex>=0){
+    const p=payments[rowIndex]||emptyPayment(rowIndex+1);
+    const lira=toNumber(p.amount);
+    const toman=toNumber(p.amountToman);
+    if(col===1){
+      panelText(`پرداخت لیر: اگر پرداخت تومان خالی باشد، همین عدد در جمع پرداخت لیر استفاده می‌شود. معادل تومان = ${fmt(lira)} × ${fmt(rate)}.`);
+    }else if(col===2){
+      panelText(`پرداخت تومان: اگر این خانه پر باشد، به لیر تبدیل می‌شود: ${fmt(toman)} ÷ ${fmt(rate)}.`);
+    }else if(col===4){
+      panelText("معادل تومان پرداخت: از پرداخت تومان مستقیم یا پرداخت لیر × نرخ زرد می‌آید.");
+    }else{
+      panelText("خانه پرداخت نمایشی یا تاریخی است.");
+    }
+    return;
+  }
+  if(tr.classList.contains("pay-row")){
+    panelText("جمع پرداخت‌شده: جمع پرداخت‌های لیر + پرداخت تومان تبدیل‌شده به لیر.");
+  }else if(tr.classList.contains("remain-row")){
+    panelText("مانده = قیمت کل فاکتور - جمع پرداخت‌شده.");
+  }else{
+    panelText("خانه پرداخت.");
+  }
+}
+function setupCellAudit(){
+  const panel=document.getElementById("cellAuditPanel");
+  if(!panel)return;
+  document.addEventListener("click",function(e){
+    const td=e.target.closest("td,th");
+    if(!td)return;
+    if(td.closest("#invoiceTable")){
+      auditInvoiceCell(td);
+    }else if(td.closest(".payment-box table")){
+      auditPaymentCell(td);
+    }
+  });
+}
+
 function initInvoiceLayoutTools(){
   setupResizableColumns();
   applyInvoiceLayout();
+  setupCellAudit();
 }
 
 loadDb();
@@ -1458,5 +2206,53 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+
+<script>
+function kbEnableResizeOnce(){
+  document.querySelectorAll("#invoiceTable th,.pay-table th").forEach((th,idx)=>{
+    if(th.querySelector(".kb-resize-handle"))return;
+    const h=document.createElement("div");
+    h.className="kb-resize-handle";
+    th.appendChild(h);
+    h.addEventListener("mousedown",function(e){
+      e.preventDefault();
+      const startX=e.clientX;
+      const startW=th.offsetWidth;
+      document.body.style.cursor="col-resize";
+      function move(ev){
+        const delta=startX-ev.clientX;
+        const w=Math.max(45,startW+delta);
+        const table=th.closest("table");
+        th.style.width=w+"px";
+        th.style.minWidth=w+"px";
+        if(table){
+          table.querySelectorAll("tr").forEach(tr=>{
+            const cell=tr.children[idx];
+            if(cell){
+              cell.style.width=w+"px";
+              cell.style.minWidth=w+"px";
+            }
+          });
+        }
+      }
+      function up(){
+        document.removeEventListener("mousemove",move);
+        document.removeEventListener("mouseup",up);
+        document.body.style.cursor="";
+      }
+      document.addEventListener("mousemove",move);
+      document.addEventListener("mouseup",up);
+    });
+  });
+}
+window.addEventListener("load",function(){
+  calculate();
+  kbEnableResizeOnce();
+  setTimeout(function(){calculate();kbEnableResizeOnce();},200);
+});
+document.addEventListener("input",function(){setTimeout(calculate,0);});
+document.addEventListener("change",function(){setTimeout(calculate,0);});
+</script>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 {
   "name": "Kel-bek",
   "short_name": "Kel-bek",
-  "description": "نسخه با تغییر عرض ستون‌ها و تنظیم فونت فاکتور",
+  "description": "no jump fixed",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
