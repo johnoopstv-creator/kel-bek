@@ -1120,6 +1120,151 @@ table{min-width:1760px!important}
   max-width:123px!important;
 }
 
+
+/* ===== جستجوی سریع خریدار در نوار بالا ===== */
+.buyer-search-box{position:relative;min-width:230px;}
+.buyer-search-box input{height:50px;border-radius:14px;border:1px solid #94a3b8;background:#fff;font-size:14px;font-weight:900;text-align:center;}
+.buyer-search-results{display:none;position:absolute;top:54px;right:0;left:0;max-height:260px;overflow-y:auto;background:#fff;border:1px solid #94a3b8;border-radius:12px;box-shadow:0 10px 25px rgba(15,23,42,.22);z-index:30;}
+.buyer-search-item{padding:9px 10px;border-bottom:1px solid #e2e8f0;font-size:13px;font-weight:900;color:#0f172a;cursor:pointer;text-align:center;}
+.buyer-search-item:hover{background:#dbeafe;}
+.buyer-search-empty{padding:9px 10px;font-size:13px;font-weight:900;color:#64748b;text-align:center;}
+.toolbar{grid-template-columns:150px 150px 250px 1fr;}
+@media(max-width:1760px){.toolbar{grid-template-columns:1fr!important}.buyer-search-box{min-width:100%}}
+
+
+/* ===== نمایش 10 خریدار آخر در نوار بالا ===== */
+.open-accounts{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.open-accounts::before{
+  content:"10 خریدار آخر";
+  font-size:12px;
+  font-weight:900;
+  color:#475569;
+  margin-left:6px;
+  flex:0 0 auto;
+}
+.open-accounts .person-chip{
+  flex:0 0 auto;
+}
+
+/* ===== رنگ فسفری برای اضافه پرداخت / طلب مشتری ===== */
+.overpaid-pay-row td,
+.overpaid-pay-row td *,
+.overpaid-pay-row .calc-cell{
+  background:#b9f56a!important;
+  color:#14532d!important;
+  -webkit-text-fill-color:#14532d!important;
+  font-weight:900!important;
+}
+
+
+/* ===== اصلاح قطعی نمایش 10 خریدار آخر ===== */
+#openAccounts{
+  min-height:50px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  overflow-x:auto!important;
+}
+#openAccounts .person-chip{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:85px!important;
+  max-width:170px!important;
+  height:36px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+
+/* ===== نمایش واقعی 10 خریدار آخر ===== */
+.open-accounts::before{content:none!important;display:none!important;}
+.last-buyers-wrap{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  overflow:hidden!important;
+}
+.last-buyers-title{
+  flex:0 0 auto;
+  font-size:12px;
+  font-weight:900;
+  color:#475569;
+  white-space:nowrap;
+}
+.last-buyers-list{
+  flex:1 1 auto;
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  overflow-x:auto!important;
+  min-height:38px!important;
+}
+.last-buyers-list .person-chip{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:80px!important;
+  max-width:160px!important;
+  height:34px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  margin:0!important;
+}
+
+
+/* ===== نمایش اجباری نام خریداران آخر ===== */
+.last-buyers-wrap{
+  overflow:visible!important;
+}
+.last-buyers-list{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+  min-height:40px!important;
+  overflow-x:auto!important;
+  padding:2px 4px!important;
+}
+.last-buyers-list .person-chip{
+  appearance:none!important;
+  border:1px solid #38bdf8!important;
+  background:#e0f2fe!important;
+  color:#0f172a!important;
+  -webkit-text-fill-color:#0f172a!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:75px!important;
+  max-width:150px!important;
+  height:32px!important;
+  padding:4px 9px!important;
+  border-radius:999px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  cursor:pointer!important;
+}
+
+
+/* ===== فقط بزرگ‌تر شدن فونت اسامی 10 خریدار آخر ===== */
+.last-buyers-list .person-chip{
+  font-size:14px!important;
+  font-weight:900!important;
+  min-width:88px!important;
+  height:34px!important;
+}
+
 </style>
 </head>
 <body>
@@ -1132,7 +1277,14 @@ table{min-width:1760px!important}
   <div class="toolbar">
     <button class="new-top" onclick="newAccount()">حساب جدید</button>
     <button class="list-btn" onclick="showBuyerList()">لیست کل خریداران</button>
-    <div class="open-accounts" id="openAccounts"></div>
+    <div class="buyer-search-box">
+      <input id="buyerQuickSearch" type="text" placeholder="جستجوی نام خریدار" oninput="renderBuyerSearchResults()">
+      <div id="buyerSearchResults" class="buyer-search-results"></div>
+    </div>
+    <div class="open-accounts last-buyers-wrap">
+      <span class="last-buyers-title">10 خریدار آخر</span>
+      <div id="openAccountsList" class="last-buyers-list"></div>
+    </div>
   </div>
 
   <div class="card">
@@ -1544,6 +1696,7 @@ function saveCurrentAccount(){
   acc.activeRows=activeRows;
   acc.rows=rows;
   acc.payments=payments;
+  acc.lastUsedAt=Date.now();
   saveDb();
   renderOpenAccounts();
 }
@@ -1563,21 +1716,83 @@ function switchAccount(id){
   if(id===db.currentId)return;
   saveCurrentAccount();
   db.currentId=id;
+  if(db.accounts[id])db.accounts[id].lastUsedAt=Date.now();
   saveDb();
   loadCurrentAccount();
 }
 function renderOpenAccounts(){
-  const box=document.getElementById("openAccounts");
+  const box=document.getElementById("openAccountsList") || document.getElementById("openAccounts");
+  if(!box)return;
   box.innerHTML="";
-  Object.keys(db.accounts).forEach(id=>{
+
+  const ids=Object.keys(db.accounts||{});
+
+  ids.sort((a,b)=>{
+    const aa=db.accounts[a]||{};
+    const bb=db.accounts[b]||{};
+    const ad=Number(aa.lastUsedAt||0) || Date.parse(aa.sendDate||aa.buyDate||"") || Number(String(a).split("_")[1]||0);
+    const bd=Number(bb.lastUsedAt||0) || Date.parse(bb.sendDate||bb.buyDate||"") || Number(String(b).split("_")[1]||0);
+    return bd-ad;
+  });
+
+  ids.filter(id=>kbHasRealBuyerName(d.accounts[id])).slice(0,10).forEach(id=>{
+    const acc=db.accounts[id]||{};
+    const name=getDisplayName(acc);
     const span=document.createElement("span");
     span.className="person-chip"+(id===db.currentId?" active":"");
-    span.textContent=getDisplayName(db.accounts[id]);
+    span.textContent=name;
+    span.title=name;
     span.onclick=()=>switchAccount(id);
     box.appendChild(span);
   });
-  document.getElementById("activeAccountName").value=getDisplayName(currentAccount());
+
+  const active=document.getElementById("activeAccountName");
+  if(active)active.value=getDisplayName(currentAccount());
 }
+
+function normalizeBuyerSearchText(v){
+  return String(v||"").trim().replace(/ي/g,"ی").replace(/ك/g,"ک").toLowerCase();
+}
+function renderBuyerSearchResults(){
+  const input=document.getElementById("buyerQuickSearch");
+  const box=document.getElementById("buyerSearchResults");
+  if(!input||!box)return;
+  const q=normalizeBuyerSearchText(input.value);
+  box.innerHTML="";
+  if(!q){box.style.display="none";return;}
+  const ids=Object.keys(db.accounts||{});
+  const matches=ids.filter(id=>{
+    const acc=db.accounts[id]||{};
+    const first=normalizeBuyerSearchText(acc.firstName||"");
+    const full=normalizeBuyerSearchText(getDisplayName(acc));
+    return first.startsWith(q) || full.startsWith(q);
+  });
+  if(!matches.length){
+    const empty=document.createElement("div");
+    empty.className="buyer-search-empty";
+    empty.textContent="نامی پیدا نشد";
+    box.appendChild(empty);
+    box.style.display="block";
+    return;
+  }
+  matches.forEach(id=>{
+    const item=document.createElement("div");
+    item.className="buyer-search-item";
+    item.textContent=getDisplayName(db.accounts[id]);
+    item.onclick=()=>{
+      input.value="";
+      box.style.display="none";
+      switchAccount(id);
+    };
+    box.appendChild(item);
+  });
+  box.style.display="block";
+}
+document.addEventListener("click",function(e){
+  const wrap=document.querySelector(".buyer-search-box");
+  const box=document.getElementById("buyerSearchResults");
+  if(wrap && box && !wrap.contains(e.target))box.style.display="none";
+});
 
 function controlLiraValue(r){
   const rate=toNumber(document.getElementById("rate")?document.getElementById("rate").value:"");
@@ -1933,7 +2148,18 @@ function calculate(){
   if(remainLabel)remainLabel.textContent=remain<0?"اضافه پرداخت / طلب مشتری":"مبلغ مانده";
   if(remainToLabel)remainToLabel.textContent=remain<0?"طلب مشتری تومان":"مانده تومان";
 
+  const remainRowEl=document.getElementById("remainRow");
+  const remainToRowEl=document.getElementById("remainToRow");
+  if(remain<0){
+    if(remainRowEl)remainRowEl.classList.add("overpaid-pay-row");
+    if(remainToRowEl)remainToRowEl.classList.add("overpaid-pay-row");
+  }else{
+    if(remainRowEl)remainRowEl.classList.remove("overpaid-pay-row");
+    if(remainToRowEl)remainToRowEl.classList.remove("overpaid-pay-row");
+  }
+
   refreshAccountsList();
+  renderBuyerSearchResults();
 }
 function calculateAndSave(){calculate();saveCurrentAccount()}
 function statusClass(t){
@@ -2359,6 +2585,72 @@ window.addEventListener("load",function(){
 });
 document.addEventListener("input",function(){setTimeout(calculate,0);});
 document.addEventListener("change",function(){setTimeout(calculate,0);});
+</script>
+
+
+<script>
+function kbGetLastBuyerDb(){
+  try{
+    const keys=["kelbek_accounts_final_v3","kelbek_accounts_pwa_v1","kelbek_accounts_v9","kelbek_accounts_v8","kelbek_accounts_v7","kelbek_accounts_v6","kelbek_accounts_v5","kelbek_accounts_v4","kelbek_accounts_v3","kelbek_accounts_v2","kelbek_accounts_v1"];
+    for(const k of keys){
+      const d=JSON.parse(localStorage.getItem(k)||"null");
+      if(d && d.accounts)return d;
+    }
+  }catch(e){}
+  return null;
+}
+function kbLastBuyerName(acc){
+  const n=((acc&&acc.firstName)||"").trim();
+  const f=((acc&&acc.lastName)||"").trim();
+  const full=(n+" "+f).trim();
+  return full || "حساب جدید";
+}
+function kbHasRealBuyerName(acc){
+  const n=((acc&&acc.firstName)||"").trim();
+  const f=((acc&&acc.lastName)||"").trim();
+  return (n+" "+f).trim().length>0;
+}
+function kbRenderLast10Buyers(){
+  const box=document.getElementById("openAccountsList");
+  if(!box)return;
+  const d=kbGetLastBuyerDb();
+  box.innerHTML="";
+  if(!d || !d.accounts)return;
+
+  const ids=Object.keys(d.accounts);
+  ids.sort((a,b)=>{
+    const aa=d.accounts[a]||{};
+    const bb=d.accounts[b]||{};
+    const at=Number(aa.lastUsedAt||0) || Date.parse(aa.sendDate||aa.buyDate||"") || Number(String(a).split("_")[1]||0);
+    const bt=Number(bb.lastUsedAt||0) || Date.parse(bb.sendDate||bb.buyDate||"") || Number(String(b).split("_")[1]||0);
+    return bt-at;
+  });
+
+  ids.filter(id=>{
+    const acc=db.accounts[id]||{};
+    return (((acc.firstName||"").trim()+" "+(acc.lastName||"").trim()).trim().length>0);
+  }).slice(0,10).forEach(id=>{
+    const item=document.createElement("button");
+    item.type="button";
+    item.className="person-chip";
+    item.textContent=kbLastBuyerName(d.accounts[id]);
+    item.onclick=function(){
+      if(typeof switchAccount==="function"){
+        switchAccount(id);
+        setTimeout(kbRenderLast10Buyers,100);
+      }
+    };
+    box.appendChild(item);
+  });
+}
+window.addEventListener("load",function(){
+  kbRenderLast10Buyers();
+  setTimeout(kbRenderLast10Buyers,200);
+  setTimeout(kbRenderLast10Buyers,800);
+});
+document.addEventListener("input",function(){setTimeout(kbRenderLast10Buyers,100);});
+document.addEventListener("change",function(){setTimeout(kbRenderLast10Buyers,100);});
+document.addEventListener("click",function(){setTimeout(kbRenderLast10Buyers,150);});
 </script>
 
 </body>
