@@ -356,6 +356,23 @@ td input{
   font-size:13px;
   opacity:.88;
 }
+
+.row-delete-btn,.row-add-row-btn{
+  color:#ffffff;
+  width:20px;
+  height:20px;
+  min-width:20px;
+  min-height:20px;
+  padding:0;
+  border-radius:5px;
+  font-size:14px;
+  line-height:20px;
+  font-weight:900;
+}
+.row-delete-btn{background:#991b1b;}
+.row-add-row-btn{background:#15803d;}
+.col-delete,.col-insert{width:34px!important}
+
 .data-tools{
   display:flex;
   justify-content:center;
@@ -1087,6 +1104,22 @@ table{min-width:1760px!important}
   font-weight:var(--invoice-font-weight,800)!important;
 }
 
+
+/* ===== فشرده‌سازی کنترل‌شده فقط برای دیده‌شدن کامل فاکتور ===== */
+#invoiceTable{min-width:100%!important;}
+#invoiceTable .col-profit-percent{width:72px!important;}
+#invoiceTable .col-pickup{width:65px!important;}
+#invoiceTable .col-shipping{width:140px!important;}
+#invoiceTable .col-delete,#invoiceTable .col-insert{width:34px!important;}
+
+/* فقط کاهش واقعی ۱۵ درصدی عرض ستون مشخص‌شده: مبلغ سود ₺ */
+#invoiceTable th:nth-child(6),
+#invoiceTable td:nth-child(6){
+  width:123px!important;
+  min-width:123px!important;
+  max-width:123px!important;
+}
+
 </style>
 </head>
 <body>
@@ -1194,22 +1227,22 @@ table{min-width:1760px!important}
     <div class="summary-card">
       <div class="summary-label">قیمت خرید کل</div>
       <div id="summaryBuy" class="summary-value">₺ 0</div>
-      <div id="summaryBuyTo" class="summary-sub">0 تومان</div>
+      <div id="summaryBuyTo" class="summary-sub">۰</div>
     </div>
     <div class="summary-card">
       <div class="summary-label">قیمت کل فاکتور</div>
       <div id="summaryInvoice" class="summary-value">₺ 0</div>
-      <div id="summaryInvoiceTo" class="summary-sub">0 تومان</div>
+      <div id="summaryInvoiceTo" class="summary-sub">۰</div>
     </div>
     <div class="summary-card profit-card">
       <div class="summary-label">سود واقعی</div>
       <div id="summaryProfit" class="summary-value">₺ 0</div>
-      <div id="summaryProfitTo" class="summary-sub">0 تومان</div>
+      <div id="summaryProfitTo" class="summary-sub">۰</div>
     </div>
     <div class="summary-card">
       <div class="summary-label">سود/زیان خرید لیر</div>
       <div id="summaryLiraDiff" class="summary-value">₺ 0</div>
-      <div id="summaryLiraDiffTo" class="summary-sub">0 تومان</div>
+      <div id="summaryLiraDiffTo" class="summary-sub">۰</div>
     </div>
   </div>
 
@@ -1217,23 +1250,27 @@ table{min-width:1760px!important}
     <table id="invoiceTable" class="resizable-table">
       <thead>
         <tr>
+          <th class="col-insert">+</th>
           <th class="col-row">ردیف</th>
           <th class="col-product">نام کالا</th>
           <th class="col-money">قیمت خرید<br>₺</th>
-          <th class="col-percent">درصد سود<br>%</th>
+          <th class="col-percent col-profit-percent">درصد سود<br>%</th>
           <th class="col-money">مبلغ سود<br>₺</th>
           <th class="col-money">قیمت نهایی<br>₺</th>
-          <th class="col-money">هزینه دریافت<br>₺</th>
-          <th class="col-control">هزینه ارسال<br>تومان</th>
+          <th class="col-money col-pickup">هزینه دریافت<br>₺</th>
+          <th class="col-control col-shipping">هزینه ارسال<br>تومان</th>
           <th class="col-date">تاریخ خرید</th>
           <th class="col-date">تاریخ ارسال</th>
           <th class="col-control">تومان کنترل</th>
           <th class="col-control">لیر کنترل</th>
+          <th class="col-percent">درصد</th>
+          <th class="col-delete">حذف</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
       <tfoot>
         <tr class="sum-row">
+          <td>---</td>
           <td class="add-cell" onclick="addRow()">+ ردیف</td>
           <td>جمع کل فاکتور</td>
           <td><span id="sumBuy" class="calc-cell">₺ 0</span></td>
@@ -1241,31 +1278,39 @@ table{min-width:1760px!important}
           <td><span id="sumProfit" class="calc-cell">₺ 0</span></td>
           <td><span id="sumBuyPlusProfit" class="calc-cell">₺ 0</span></td>
           <td><span id="sumPickupLira" class="calc-cell">₺ 0</span></td>
-          <td><span id="sumShippingBlue" class="calc-cell">0 تومان</span></td>
-          <td colspan="4" class="unit-cell"></td>
+          <td><span id="sumShippingBlue" class="calc-cell">۰</span></td>
+          <td colspan="2" class="unit-cell"></td>
+          <td><span id="sumControlToman" class="calc-cell">۰</span></td>
+          <td><span id="sumControlLira" class="calc-cell">₺ 0</span></td>
+          <td>---</td>
+          <td>---</td>
         </tr>
         <tr class="toman-row">
           <td></td>
+          <td></td>
           <td>معادل تومان</td>
-          <td><span id="sumBuyTo" class="calc-cell">0 تومان</span></td>
+          <td><span id="sumBuyTo" class="calc-cell">۰</span></td>
           <td>---</td>
-          <td><span id="sumProfitTo" class="calc-cell">0 تومان</span></td>
-          <td><span id="sumBuyPlusProfitTo" class="calc-cell">0 تومان</span></td>
-          <td><span id="sumPickupLiraTo" class="calc-cell">0 تومان</span></td>
-          <td colspan="5" class="unit-cell"></td>
+          <td><span id="sumProfitTo" class="calc-cell">۰</span></td>
+          <td><span id="sumBuyPlusProfitTo" class="calc-cell">۰</span></td>
+          <td><span id="sumPickupLiraTo" class="calc-cell">۰</span></td>
+          <td colspan="7" class="unit-cell"></td>
         </tr>
         <tr class="lira-diff-row">
           <td></td>
+          <td></td>
           <td>سود/زیان خرید لیر</td>
-          <td><span id="liraDiffProfitTo" class="calc-cell">0 تومان</span></td>
+          <td><span id="liraDiffProfitTo" class="calc-cell">۰</span></td>
           <td colspan="2" class="unit-cell compact-formula">جمع نهایی لیر × اختلاف هر لیر</td>
-          <td colspan="7" class="ghost-cell"></td>
+          <td colspan="9" class="ghost-cell"></td>
         </tr>
         <tr class="extra-profit-row">
           <td></td>
+          <td></td>
           <td>سود مازاد</td>
           <td><input id="extraProfit" class="num extra-profit-input" type="text" inputmode="decimal" placeholder="0" oninput="formatLiveInput(this);calculateAndSave()" onblur="formatFinalExtraProfit(this)"></td>
-          <td colspan="2" class="unit-cell invoice-extra-cell compact-value"><span id="invoiceWithExtra" class="calc-cell">₺ 0</span><span class="inline-unit">لیر</span></td>
+          <td colspan="2" class="unit-cell invoice-extra-cell compact-value" style="background:#fef08a!important;border-color:#facc15!important;"><span id="invoiceWithExtra" class="calc-cell">₺ 0</span><span class="inline-unit">لیر</span></td>
+          <td colspan="2" class="unit-cell compact-formula">قیمت کل فاکتور + هزینه ارسال</td>
           <td colspan="7" class="ghost-cell"></td>
         </tr>
       </tfoot>
@@ -1294,7 +1339,7 @@ table{min-width:1760px!important}
           </tr>
           <tr class="toman-row">
             <td colspan="4">پرداخت‌شده تومان</td>
-            <td><span id="paidTo" class="calc-cell">0 تومان</span></td>
+            <td><span id="paidTo" class="calc-cell">۰</span></td>
           </tr>
           <tr class="remain-row" id="remainRow">
             <td colspan="4" id="remainLabel">مبلغ مانده</td>
@@ -1302,7 +1347,7 @@ table{min-width:1760px!important}
           </tr>
           <tr class="toman-row" id="remainToRow">
             <td colspan="4" id="remainToLabel">مانده تومان</td>
-            <td><span id="remainTo" class="calc-cell">0 تومان</span></td>
+            <td><span id="remainTo" class="calc-cell">۰</span></td>
           </tr>
         </tfoot>
       </table>
@@ -1393,13 +1438,16 @@ function fmt(n){
   }
   return n.toLocaleString("en-US",{maximumFractionDigits:2});
 }
+function toPersianDigitsText(value){
+  return String(value).replace(/0/g,"۰").replace(/1/g,"۱").replace(/2/g,"۲").replace(/3/g,"۳").replace(/4/g,"۴").replace(/5/g,"۵").replace(/6/g,"۶").replace(/7/g,"۷").replace(/8/g,"۸").replace(/9/g,"۹");
+}
 function fmtPct(n){
   n=Number(n||0);
   if(Math.abs(n-Math.round(n))<0.000001)return String(Math.round(n));
   return n.toLocaleString("en-US",{maximumFractionDigits:2});
 }
 function moneyLira(n){return "₺ "+fmt(n)}
-function moneyToman(n){return fmt(n)+" تومان"}
+function moneyToman(n){return toPersianDigitsText(fmt(n))}
 function signedMoneyLira(n){
   n=Number(n||0);
   if(n<0)return "- ₺ "+fmt(Math.abs(n));
@@ -1408,9 +1456,9 @@ function signedMoneyLira(n){
 }
 function signedMoneyToman(n){
   n=Number(n||0);
-  if(n<0)return "- "+fmt(Math.abs(n))+" تومان";
-  if(n>0)return "+ "+fmt(n)+" تومان";
-  return "0 تومان";
+  if(n<0)return "- "+toPersianDigitsText(fmt(Math.abs(n)));
+  if(n>0)return "+ "+toPersianDigitsText(fmt(n));
+  return "۰";
 }
 function formatLiveInput(el){
   const raw=cleanNumberString(el.value);
@@ -1531,10 +1579,19 @@ function renderOpenAccounts(){
   document.getElementById("activeAccountName").value=getDisplayName(currentAccount());
 }
 
-function controlLiraText(r){
+function controlLiraValue(r){
   const rate=toNumber(document.getElementById("rate")?document.getElementById("rate").value:"");
   const toman=toNumber(r && r.controlToman);
-  return rate>0 ? moneyLira(toman/rate) : "₺ 0";
+  return rate>0 ? toman/rate : 0;
+}
+function controlLiraText(r){
+  return moneyLira(controlLiraValue(r));
+}
+function controlPercentText(r){
+  const buy=toNumber(r && r.buy);
+  const controlLira=controlLiraValue(r);
+  if(buy<=0 || controlLira<=0)return "---";
+  return ((controlLira-buy)/buy*100).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3});
 }
 
 function renderRows(){
@@ -1549,6 +1606,7 @@ function renderRows(){
     const profitAmount=buy*percent/100, buyPlusProfit=buy+profitAmount;
     const tr=document.createElement("tr");
     tr.innerHTML=`
+      <td><button type="button" class="row-add-row-btn" onclick="insertInvoiceRow(${i});event.stopPropagation();" title="افزودن ردیف بعد از این ردیف">+</button></td>
       <td class="row-no">${i+1}</td>
       <td><input value="${escapeHtml(r.product)}" oninput="updateCell(${i},'product',this.value)"></td>
       <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.buy)}" oninput="formatLiveInput(this);updateCell(${i},'buy',this.value)" onblur="formatFinalCell(${i},'buy',this)"></td>
@@ -1560,7 +1618,9 @@ function renderRows(){
       <td><input class="num date-input" type="date" value="${escapeHtml(r.buyDateRow)}" oninput="updateCell(${i},'buyDateRow',this.value)" title="تاریخ"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(r.sendDateRow)}" oninput="updateCell(${i},'sendDateRow',this.value)" title="تاریخ"></td>
       <td><input class="num control-toman-input" type="text" inputmode="decimal" value="${escapeHtml(r.controlToman||'')}" oninput="formatLiveInput(this);updateCell(${i},'controlToman',this.value)" onblur="formatFinalCell(${i},'controlToman',this)"></td>
-      <td><span id="controlLira_${i}" class="calc-cell control-lira-output">${controlLiraText(r)}</span></td>`;
+      <td><span id="controlLira_${i}" class="calc-cell control-lira-output">${controlLiraText(r)}</span></td>
+      <td><span id="controlPercent_${i}" class="calc-cell">${controlPercentText(r)}</span></td>
+      <td><button type="button" class="row-delete-btn" onclick="deleteInvoiceRow(${i});event.stopPropagation();" title="حذف ردیف">×</button></td>`;
     tbody.appendChild(tr);
   }
 }
@@ -1579,7 +1639,7 @@ function renderPayments(){
       <td><input id="paymentAmount_${i}" class="num" type="text" inputmode="decimal" value="${escapeHtml(p.amount)}" oninput="formatLiveInput(this);updatePayment(${i},'amount',this.value)" onblur="formatFinalPayment(${i},this)"></td>
       <td><input class="num payment-toman-input" type="text" inputmode="decimal" value="${escapeHtml(p.amountToman||'')}" oninput="formatLiveInput(this);updatePaymentToman(${i},this.value)" onblur="formatFinalPaymentToman(${i},this)"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(p.date)}" oninput="updatePayment(${i},'date',this.value)" title="تاریخ"></td>
-      <td><span id="paymentTo_${i}" class="calc-cell">0 تومان</span></td>`;
+      <td><span id="paymentTo_${i}" class="calc-cell">۰</span></td>`;
     tbody.appendChild(tr);
   }
 }
@@ -1629,6 +1689,30 @@ function addRow(){
   renderRows();
   calculateAndSave();
 }
+function insertInvoiceRow(index){
+  if(activeRows>=300)return;
+  rows.splice(index+1,0,emptyRow(index+2));
+  activeRows+=1;
+  rows=rows.slice(0,activeRows);
+  rows.forEach((r,i)=>{r.no=i+1;});
+  document.getElementById("activeRows").value=activeRows;
+  renderRows();
+  calculateAndSave();
+}
+function deleteInvoiceRow(index){
+  if(activeRows<=1){
+    rows=[emptyRow(1)];
+    activeRows=1;
+  }else{
+    rows.splice(index,1);
+    activeRows-=1;
+    rows=rows.slice(0,activeRows);
+    rows.forEach((r,i)=>{r.no=i+1;});
+  }
+  document.getElementById("activeRows").value=activeRows;
+  renderRows();
+  calculateAndSave();
+}
 function addPayment(){
   payments.push(emptyPayment(payments.length+1));
   renderPayments();
@@ -1647,6 +1731,8 @@ function totalsFor(acc){
   let sumPickupLira=0;
   let sumShippingTo=0;
   let sumShippingLira=0;
+  let sumControlToman=0;
+  let sumControlLira=0;
 
   for(let i=0;i<count;i++){
     const r=acc.rows[i]||emptyRow(i+1);
@@ -1654,6 +1740,7 @@ function totalsFor(acc){
     const percent=toNumber(r.profitPercent);
     const pickupLira=toNumber(r.pickupLira);
     const shippingTo=toNumber(r.shippingToman);
+    const controlToman=toNumber(r.controlToman);
 
     const profitAmount=buy*percent/100;
     const rowFinal=buy+profitAmount;
@@ -1665,6 +1752,8 @@ function totalsFor(acc){
     sumPickupLira+=pickupLira;
     sumShippingTo+=shippingTo;
     sumShippingLira+=shippingLira;
+    sumControlToman+=controlToman;
+    sumControlLira+=rate>0 ? controlToman/rate : 0;
   }
 
   const invoiceSummary=sumRowFinal;
@@ -1716,6 +1805,8 @@ function calculate(){
   let sumPickupLira=0;
   let sumShippingTo=0;
   let sumShippingLira=0;
+  let sumControlToman=0;
+  let sumControlLira=0;
 
   for(let i=0;i<activeRows;i++){
     const r=rows[i]||emptyRow(i+1);
@@ -1723,6 +1814,7 @@ function calculate(){
     const percent=toNumber(r.profitPercent);
     const pickupLira=toNumber(r.pickupLira);
     const shippingTo=toNumber(r.shippingToman);
+    const controlToman=toNumber(r.controlToman);
 
     const profitAmount=buy*percent/100;
     const rowFinal=buy+profitAmount;
@@ -1734,14 +1826,18 @@ function calculate(){
     sumPickupLira+=pickupLira;
     sumShippingTo+=shippingTo;
     sumShippingLira+=shippingLira;
+    sumControlToman+=controlToman;
+    sumControlLira+=rate>0 ? controlToman/rate : 0;
 
     const pa=document.getElementById("profitAmount_"+i);
     const bp=document.getElementById("buyPlusProfit_"+i);
     const cl=document.getElementById("controlLira_"+i);
+    const cp=document.getElementById("controlPercent_"+i);
 
     if(pa)pa.textContent=moneyLira(Math.round(profitAmount));
     if(bp)bp.textContent=moneyLira(Math.round(rowFinal));
     if(cl)cl.textContent=controlLiraText(r);
+    if(cp)cp.textContent=controlPercentText(r);
   }
 
   const invoiceSummary=sumRowFinal+sumPickupLira;                    // قیمت کل فاکتور = جمع قیمت نهایی + جمع هزینه دریافت
@@ -1783,6 +1879,10 @@ function calculate(){
 
   const shipBlue=document.getElementById("sumShippingBlue");
   if(shipBlue)shipBlue.textContent=moneyToman(sumShippingTo);
+  const sumControlTomanEl=document.getElementById("sumControlToman");
+  if(sumControlTomanEl)sumControlTomanEl.textContent=moneyToman(sumControlToman);
+  const sumControlLiraEl=document.getElementById("sumControlLira");
+  if(sumControlLiraEl)sumControlLiraEl.textContent=moneyLira(sumControlLira);
 
   // ردیف سود/زیان خرید لیر: فقط یک عدد کنار توضیح
   const ldpTo=document.getElementById("liraDiffProfitTo");
@@ -2090,29 +2190,36 @@ function auditInvoiceCell(td){
     const shippingLira=rate>0?shippingTo/rate:0;
 
     // column index:
-    // 0 row, 1 product, 2 buy, 3 percent, 4 profit, 5 final, 6 pickup, 7 shipping, 8 buyDate, 9 sendDate, 10 controlToman, 11 controlLira
-    if(col===2){
-      markInvoice(rowIndex,[4,5], "audit-target");
-      panelText(`قیمت خرید این ردیف = ${fmt(buy)} لیر. اثر: سود = ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} و قیمت نهایی ردیف = ${fmt(rowFinal)}.`);
+    // 0 add, 1 row, 2 product, 3 buy, 4 percent, 5 profit, 6 final, 7 pickup, 8 shipping, 9 buyDate, 10 sendDate, 11 controlToman, 12 controlLira, 13 controlPercent, 14 delete
+    if(col===0){
+      panelText("افزودن ردیف: با این دکمه یک ردیف خالی دقیقاً بعد از همین ردیف اضافه می‌شود و شماره‌ها دوباره مرتب می‌شوند.");
     }else if(col===3){
-      markInvoice(rowIndex,[2], "audit-source");
-      markInvoice(rowIndex,[4,5], "audit-target");
-      panelText(`درصد سود = ${fmt(percent)}٪. وابسته به قیمت خرید همین ردیف است. فرمول: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
+      markInvoice(rowIndex,[5,6], "audit-target");
+      panelText(`قیمت خرید این ردیف = ${fmt(buy)} لیر. اثر: سود = ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} و قیمت نهایی ردیف = ${fmt(rowFinal)}.`);
     }else if(col===4){
-      markInvoice(rowIndex,[2,3], "audit-source");
-      markInvoice(rowIndex,[5], "audit-target");
-      panelText(`مبلغ سود از قیمت خرید و درصد همین ردیف می‌آید: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
+      markInvoice(rowIndex,[3], "audit-source");
+      markInvoice(rowIndex,[5,6], "audit-target");
+      panelText(`درصد سود = ${fmt(percent)}٪. وابسته به قیمت خرید همین ردیف است. فرمول: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
     }else if(col===5){
-      markInvoice(rowIndex,[2,4], "audit-source");
-      panelText(`قیمت نهایی ردیف = قیمت خرید + مبلغ سود = ${fmt(buy)} + ${fmt(profit)} = ${fmt(rowFinal)} لیر. هزینه دریافت و هزینه ارسال داخل این خانه نیست.`);
+      markInvoice(rowIndex,[3,4], "audit-source");
+      markInvoice(rowIndex,[6], "audit-target");
+      panelText(`مبلغ سود از قیمت خرید و درصد همین ردیف می‌آید: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
     }else if(col===6){
-      panelText(`هزینه دریافت (پیک) = ${fmt(pickupLira)} لیر. به جمع کل فاکتور و معادل تومان اضافه می‌شود اما در درصد سود ردیف وارد نمی‌شود.`);
+      markInvoice(rowIndex,[3,5], "audit-source");
+      panelText(`قیمت نهایی ردیف = قیمت خرید + مبلغ سود = ${fmt(buy)} + ${fmt(profit)} = ${fmt(rowFinal)} لیر. هزینه دریافت و هزینه ارسال داخل این خانه نیست.`);
     }else if(col===7){
+      panelText(`هزینه دریافت (پیک) = ${fmt(pickupLira)} لیر. به جمع کل فاکتور و معادل تومان اضافه می‌شود اما در درصد سود ردیف وارد نمی‌شود.`);
+    }else if(col===8){
       panelText(`هزینه ارسال تومان = ${fmt(shippingTo)}. تبدیل آن به لیر: ${fmt(shippingTo)} ÷ ${fmt(rate)} = ${fmt(shippingLira)} لیر. فقط در جمع کل پرداخت اضافه می‌شود، نه در سود ردیف.`);
-    }else if(col===10){
-      panelText("تومان کنترل: خانه کنترل دستی است و در محاسبه اتوماتیک اثر ندارد.");
     }else if(col===11){
-      panelText("لیر کنترل: خانه کنترل دستی است و در محاسبه اتوماتیک اثر ندارد.");
+      panelText("تومان کنترل: خانه کنترل دستی است و در محاسبه اتوماتیک اثر ندارد.");
+    }else if(col===12){
+      panelText("لیر کنترل: از تقسیم تومان کنترل بر نرخ روز به دست می‌آید.");
+    }else if(col===13){
+      markInvoice(rowIndex,[3,12], "audit-source");
+      panelText("درصد این ستون = (لیر کنترل - قیمت خرید) ÷ قیمت خرید × 100 و با سه رقم اعشار نمایش داده می‌شود.");
+    }else if(col===14){
+      panelText("حذف ردیف: این دکمه فقط همین ردیف را حذف می‌کند و شماره ردیف‌ها و جمع‌ها دوباره مرتب و محاسبه می‌شوند.");
     }else{
       panelText("این خانه عدد محاسباتی اصلی نیست یا فقط نمایش/ورودی متنی است.");
     }

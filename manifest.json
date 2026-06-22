@@ -1,7 +1,6 @@
 {
   "name": "Kel-bek",
   "short_name": "Kel-bek",
-  "description": "no jump fixed",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
