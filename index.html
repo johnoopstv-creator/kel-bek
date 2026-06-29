@@ -1002,7 +1002,7 @@ table{min-width:1760px!important}
 }
 
 
-/* ===== کنترل واقعی فونت جدول و پرداخت‌ها ===== */
+/* ===== فونت ثابت جدول و پرداخت‌ها ===== */
 :root{
   --invoice-font-family:Tahoma,Arial,sans-serif;
   --invoice-font-size:14px;
@@ -1265,6 +1265,48 @@ table{min-width:1760px!important}
   height:34px!important;
 }
 
+
+/* ===== اصلاحات دیداری نسخه v6 ===== */
+:root{
+  --invoice-font-family:Tahoma,Arial,sans-serif;
+  --invoice-font-size:14px;
+  --invoice-font-weight:800;
+  --invoice-text-darkness:#111111;
+}
+.cell-audit-panel{
+  min-height:44px!important;
+}
+.sum-row td{
+  height:56px!important;
+  padding-top:12px!important;
+  padding-bottom:12px!important;
+  font-size:16px!important;
+  line-height:1.35!important;
+}
+.sum-row .calc-cell,
+.sum-row span,
+.sum-row input{
+  font-size:16px!important;
+}
+.extra-profit-row .compact-formula{
+  font-size:11px!important;
+  line-height:1.25!important;
+  white-space:normal!important;
+  padding-left:4px!important;
+  padding-right:4px!important;
+}
+
+.extra-profit-label-cell{
+  border:1px solid #94a3b8!important;
+  background:#ffffff!important;
+}
+.calc-cell,
+.summary-value,
+.summary-sub{
+  font-family:Tahoma,Arial,sans-serif!important;
+  letter-spacing:0!important;
+}
+
 </style>
 </head>
 <body>
@@ -1335,44 +1377,7 @@ table{min-width:1760px!important}
     <button class="new-small" onclick="addRow()">افزودن ردیف</button>
   </div>
 
-
-  <div class="invoice-tools">
-
-    <div class="tool-field">
-      <label>فونت جدول</label>
-      <select id="invoiceFontFamily" onchange="applyInvoiceStyleFromControls()">
-        <option value="Tahoma">Tahoma</option>
-        <option value="Arial">Arial</option>
-        <option value="Segoe UI">Segoe UI</option>
-        <option value="Verdana">Verdana</option>
-        <option value="Trebuchet MS">Trebuchet MS</option>
-        <option value="Calibri">Calibri</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Courier New">Courier New</option>
-        <option value="system-ui">System UI</option>
-      </select>
-    </div>
-    <div class="tool-field">
-      <label>اندازه فونت فاکتور</label>
-      <input id="invoiceFontSize" class="num" type="number" min="10" max="22" step="1" value="14" oninput="applyInvoiceStyleFromControls()">
-    </div>
-    <div class="tool-field">
-      <label>ضخامت فونت</label>
-      <input id="invoiceFontWeight" class="num" type="range" min="400" max="950" step="50" value="800" oninput="applyInvoiceStyleFromControls()">
-    </div>
-    <div class="tool-field">
-      <label>تیرگی نوشته</label>
-      <input id="invoiceDarkness" class="num" type="range" min="0" max="100" step="5" value="95" oninput="applyInvoiceStyleFromControls()">
-    </div>
-    <button type="button" onclick="resetInvoiceLayout()">ریست عرض و فونت</button>
-  </div>
-
-
-
-  <div id="cellAuditPanel" class="cell-audit-panel">
-    روی هر خانه جدول کلیک کنید؛ خانه انتخاب‌شده و خانه‌های مرتبط مشخص می‌شوند.
-  </div>
+  <div id="cellAuditPanel" class="cell-audit-panel"></div>
 
 
   <div class="summary-strip">
@@ -1410,7 +1415,7 @@ table{min-width:1760px!important}
           <th class="col-money">مبلغ سود<br>₺</th>
           <th class="col-money">قیمت نهایی<br>₺</th>
           <th class="col-control">قیمت خرید<br>به تومان</th>
-          <th class="col-money col-pickup">هزینه دریافت<br>₺</th>
+          <th class="col-money col-pickup">پیک<br>₺</th>
           <th class="col-control col-shipping">هزینه ارسال<br>تومان</th>
           <th class="col-date">تاریخ خرید</th>
           <th class="col-control">تومان کنترل</th>
@@ -1422,9 +1427,8 @@ table{min-width:1760px!important}
       <tbody id="tbody"></tbody>
       <tfoot>
         <tr class="sum-row">
-          <td>---</td>
-          <td class="add-cell" onclick="addRow()">+ ردیف</td>
-          <td>جمع کل فاکتور</td>
+          <td colspan="2" class="add-cell" onclick="addRow()">+ ردیف</td>
+          <td>جمع</td>
           <td><span id="sumBuy" class="calc-cell">₺ 0</span></td>
           <td>---</td>
           <td><span id="sumProfit" class="calc-cell">₺ 0</span></td>
@@ -1464,8 +1468,8 @@ table{min-width:1760px!important}
           <td>سود مازاد</td>
           <td><input id="extraProfit" class="num extra-profit-input" type="text" inputmode="decimal" placeholder="0" oninput="formatLiveInput(this);calculateAndSave()" onblur="formatFinalExtraProfit(this)"></td>
           <td colspan="2" class="unit-cell invoice-extra-cell compact-value" style="background:#fef08a!important;border-color:#facc15!important;"><span id="invoiceWithExtra" class="calc-cell">₺ 0</span><span class="inline-unit">لیر</span></td>
-          <td colspan="2" class="unit-cell compact-formula">قیمت کل فاکتور + هزینه ارسال</td>
-          <td colspan="2" class="unit-cell invoice-extra-cell compact-value" style="background:#ecfdf5!important;border-color:#86efac!important;"><span id="invoiceWithExtraTo" class="calc-cell">۰</span><span class="inline-unit">تومان</span></td>
+          <td colspan="2" class="unit-cell compact-formula extra-profit-label-cell">قیمت کل فاکتور + هزینه ارسال + سود - زیان خرید لیر</td>
+          <td colspan="2" class="unit-cell invoice-extra-cell compact-value" style="background:#ecfdf5!important;border:1px solid #86efac!important;border-color:#86efac!important;"><span id="invoiceWithExtraTo" class="calc-cell">۰</span><span class="inline-unit">تومان</span></td>
           <td colspan="5" class="ghost-cell"></td>
         </tr>
       </tfoot>
@@ -1483,25 +1487,26 @@ table{min-width:1760px!important}
             <th style="width:190px">پرداخت تومان</th>
             <th style="width:170px">تاریخ پرداخت</th>
             <th style="width:190px">معادل تومان</th>
+            <th style="width:70px">حذف</th>
           </tr>
         </thead>
         <tbody id="paymentsBody"></tbody>
         <tfoot>
           <tr class="pay-row">
             <td class="add-cell" onclick="addPayment()">+ پرداخت</td>
-            <td colspan="3">جمع پرداخت‌شده</td>
+            <td colspan="4">جمع پرداخت‌شده</td>
             <td><span id="paidTotal" class="calc-cell">₺ 0</span></td>
           </tr>
           <tr class="toman-row">
-            <td colspan="4">پرداخت‌شده تومان</td>
+            <td colspan="5">پرداخت‌شده تومان</td>
             <td><span id="paidTo" class="calc-cell">۰</span></td>
           </tr>
           <tr class="remain-row" id="remainRow">
-            <td colspan="4" id="remainLabel">مبلغ مانده</td>
+            <td colspan="5" id="remainLabel">مبلغ مانده</td>
             <td><span id="remain" class="calc-cell">₺ 0</span></td>
           </tr>
           <tr class="toman-row" id="remainToRow">
-            <td colspan="4" id="remainToLabel">مانده تومان</td>
+            <td colspan="5" id="remainToLabel">مانده تومان</td>
             <td><span id="remainTo" class="calc-cell">۰</span></td>
           </tr>
         </tfoot>
@@ -1857,7 +1862,8 @@ function renderPayments(){
       <td><input id="paymentAmount_${i}" class="num" type="text" inputmode="decimal" value="${escapeHtml(p.amount)}" oninput="formatLiveInput(this);updatePayment(${i},'amount',this.value)" onblur="formatFinalPayment(${i},this)"></td>
       <td><input class="num payment-toman-input" type="text" inputmode="decimal" value="${escapeHtml(p.amountToman||'')}" oninput="formatLiveInput(this);updatePaymentToman(${i},this.value)" onblur="formatFinalPaymentToman(${i},this)"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(p.date)}" oninput="updatePayment(${i},'date',this.value)" title="تاریخ"></td>
-      <td><span id="paymentTo_${i}" class="calc-cell">۰</span></td>`;
+      <td><span id="paymentTo_${i}" class="calc-cell">۰</span></td>
+      <td><button type="button" class="row-delete-btn" onclick="deletePaymentRow(${i});event.stopPropagation();" title="حذف پرداخت">×</button></td>`;
     tbody.appendChild(tr);
   }
 }
@@ -1936,6 +1942,16 @@ function addPayment(){
   renderPayments();
   calculateAndSave();
 }
+function deletePaymentRow(index){
+  if(payments.length<=1){
+    payments=[emptyPayment(1)];
+  }else{
+    payments.splice(index,1);
+    payments.forEach((p,i)=>{p.no=i+1;});
+  }
+  renderPayments();
+  calculateAndSave();
+}
 function totalsFor(acc){
   acc=normalizeAccount(acc);
   const rate=toNumber(acc.rate);
@@ -1975,11 +1991,11 @@ function totalsFor(acc){
   }
 
   const invoiceSummary=sumRowFinal;
-  const invoiceForPayment=sumRowFinal+sumShippingLira+extraProfit;
 
   const diffRate=(buyRate>0 && rate>0) ? (rate-buyRate) : 0;
   const diffTo=invoiceSummary*diffRate;
   const diffLira=rate>0 ? diffTo/rate : 0;
+  const invoiceForPayment=sumRowFinal+sumShippingLira+diffLira+extraProfit;
   const realProfit=sumProfit+diffLira+extraProfit;
 
   let paid=0;
@@ -2061,10 +2077,10 @@ function calculate(){
   }
 
   const invoiceSummary=sumRowFinal+sumPickupLira;                    // قیمت کل فاکتور = جمع قیمت نهایی + جمع هزینه دریافت
-  const invoiceForPayment=invoiceSummary+sumShippingLira+extraProfit;  // برای پرداخت/مانده
   const diffRate=(buyRate>0 && rate>0) ? (rate-buyRate) : 0;
   const diffTo=invoiceSummary*diffRate;
   const diffLira=rate>0 ? diffTo/rate : 0;
+  const invoiceForPayment=invoiceSummary+sumShippingLira+diffLira+extraProfit;  // برای پرداخت/مانده
   const realProfit=sumProfit+diffLira+extraProfit;
 
   const diffBox=document.getElementById("buyRateDiffText");
@@ -2267,53 +2283,25 @@ function saveLayout(layout){
 }
 
 function darknessToColor(v){
-  v=Math.max(0,Math.min(100,Number(v||95)));
-  const n=Math.round(190-(175*(v/100)));
-  return "rgb("+n+","+n+","+n+")";
+  return "#111111";
 }
 function applyInvoiceStyleFromControls(){
-  const layout=getLayout();
-  const ff=document.getElementById("invoiceFontFamily")?document.getElementById("invoiceFontFamily").value:(layout.fontFamily||"Tahoma");
-  const fs=document.getElementById("invoiceFontSize")?Number(document.getElementById("invoiceFontSize").value||14):14;
-  const fw=document.getElementById("invoiceFontWeight")?Number(document.getElementById("invoiceFontWeight").value||800):800;
-  const dk=document.getElementById("invoiceDarkness")?Number(document.getElementById("invoiceDarkness").value||95):95;
-  layout.fontFamily=ff;
-  layout.fontSize=fs;
-  layout.fontWeight=fw;
-  layout.darkness=dk;
-  saveLayout(layout);
   applyInvoiceLayout();
 }
 function applyInvoiceLayout(){
-  const layout=getLayout();
-  const ff=layout.fontFamily||"Tahoma";
-  const fs=layout.fontSize||14;
-  const fw=layout.fontWeight||800;
-  const dk=layout.darkness===undefined?95:layout.darkness;
-  const color=darknessToColor(dk);
+  // فونت برنامه ثابت است؛ فقط عرض ستون‌ها از حافظه خوانده می‌شود.
+  document.documentElement.style.setProperty("--invoice-font-family","Tahoma,Arial,sans-serif");
+  document.documentElement.style.setProperty("--invoice-font-size","14px");
+  document.documentElement.style.setProperty("--invoice-font-weight","800");
+  document.documentElement.style.setProperty("--invoice-text-darkness","#111111");
 
-  document.documentElement.style.setProperty("--invoice-font-family",ff);
-  document.documentElement.style.setProperty("--invoice-font-size",fs+"px");
-  document.documentElement.style.setProperty("--invoice-font-weight",String(fw));
-  document.documentElement.style.setProperty("--invoice-text-darkness",color);
-
-  const ffEl=document.getElementById("invoiceFontFamily");
-  const fsEl=document.getElementById("invoiceFontSize");
-  const fwEl=document.getElementById("invoiceFontWeight");
-  const dkEl=document.getElementById("invoiceDarkness");
-  if(ffEl)ffEl.value=ff;
-  if(fsEl)fsEl.value=fs;
-  if(fwEl)fwEl.value=fw;
-  if(dkEl)dkEl.value=dk;
-
-  // اعمال مستقیم برای غلبه بر CSSهای قبلی
   document.querySelectorAll(".invoice-font-scope td,.invoice-font-scope td *,.invoice-font-scope input,.payment-box td,.payment-box td *,.payment-box input").forEach(el=>{
     if(el.closest(".summary-strip"))return;
-    el.style.fontFamily=ff;
-    el.style.fontSize=fs+"px";
-    el.style.fontWeight=String(fw);
-    el.style.color=color;
-    el.style.webkitTextFillColor=color;
+    el.style.fontFamily="Tahoma, Arial, sans-serif";
+    el.style.fontSize="14px";
+    el.style.fontWeight="800";
+    el.style.color="#111111";
+    el.style.webkitTextFillColor="#111111";
   });
 
   applyColumnWidths();
