@@ -1409,10 +1409,10 @@ table{min-width:1760px!important}
           <th class="col-percent col-profit-percent">درصد سود<br>%</th>
           <th class="col-money">مبلغ سود<br>₺</th>
           <th class="col-money">قیمت نهایی<br>₺</th>
+          <th class="col-control">قیمت خرید<br>به تومان</th>
           <th class="col-money col-pickup">هزینه دریافت<br>₺</th>
           <th class="col-control col-shipping">هزینه ارسال<br>تومان</th>
           <th class="col-date">تاریخ خرید</th>
-          <th class="col-date">تاریخ ارسال</th>
           <th class="col-control">تومان کنترل</th>
           <th class="col-control">لیر کنترل</th>
           <th class="col-percent">درصد</th>
@@ -1429,9 +1429,10 @@ table{min-width:1760px!important}
           <td>---</td>
           <td><span id="sumProfit" class="calc-cell">₺ 0</span></td>
           <td><span id="sumBuyPlusProfit" class="calc-cell">₺ 0</span></td>
+          <td><span id="sumFinalBuyTo" class="calc-cell">۰</span></td>
           <td><span id="sumPickupLira" class="calc-cell">₺ 0</span></td>
           <td><span id="sumShippingBlue" class="calc-cell">۰</span></td>
-          <td colspan="2" class="unit-cell"></td>
+          <td class="unit-cell"></td>
           <td><span id="sumControlToman" class="calc-cell">۰</span></td>
           <td><span id="sumControlLira" class="calc-cell">₺ 0</span></td>
           <td>---</td>
@@ -1445,8 +1446,9 @@ table{min-width:1760px!important}
           <td>---</td>
           <td><span id="sumProfitTo" class="calc-cell">۰</span></td>
           <td><span id="sumBuyPlusProfitTo" class="calc-cell">۰</span></td>
+          <td><span id="sumFinalBuyTo2" class="calc-cell">۰</span></td>
           <td><span id="sumPickupLiraTo" class="calc-cell">۰</span></td>
-          <td colspan="7" class="unit-cell"></td>
+          <td colspan="6" class="unit-cell"></td>
         </tr>
         <tr class="lira-diff-row">
           <td></td>
@@ -1463,7 +1465,8 @@ table{min-width:1760px!important}
           <td><input id="extraProfit" class="num extra-profit-input" type="text" inputmode="decimal" placeholder="0" oninput="formatLiveInput(this);calculateAndSave()" onblur="formatFinalExtraProfit(this)"></td>
           <td colspan="2" class="unit-cell invoice-extra-cell compact-value" style="background:#fef08a!important;border-color:#facc15!important;"><span id="invoiceWithExtra" class="calc-cell">₺ 0</span><span class="inline-unit">لیر</span></td>
           <td colspan="2" class="unit-cell compact-formula">قیمت کل فاکتور + هزینه ارسال</td>
-          <td colspan="7" class="ghost-cell"></td>
+          <td colspan="2" class="unit-cell invoice-extra-cell compact-value" style="background:#ecfdf5!important;border-color:#86efac!important;"><span id="invoiceWithExtraTo" class="calc-cell">۰</span><span class="inline-unit">تومان</span></td>
+          <td colspan="5" class="ghost-cell"></td>
         </tr>
       </tfoot>
     </table>
@@ -1828,10 +1831,10 @@ function renderRows(){
       <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.profitPercent)}" oninput="updateCell(${i},'profitPercent',this.value)" onblur="formatPercentCell(${i},this)"></td>
       <td><span id="profitAmount_${i}" class="calc-cell">${moneyLira(profitAmount)}</span></td>
       <td><span id="buyPlusProfit_${i}" class="calc-cell">${moneyLira(buyPlusProfit)}</span></td>
+      <td><span id="finalBuyTo_${i}" class="calc-cell">${moneyToman(buyPlusProfit*toNumber(document.getElementById("rate")?document.getElementById("rate").value:""))}</span></td>
       <td><input class="num" type="text" inputmode="decimal" value="${escapeHtml(r.pickupLira||'')}" oninput="formatLiveInput(this);updateCell(${i},'pickupLira',this.value)" onblur="formatFinalCell(${i},'pickupLira',this)"></td>
       <td><input class="num shipping-input" type="text" inputmode="decimal" value="${escapeHtml(r.shippingToman||'')}" oninput="formatLiveInput(this);updateCell(${i},'shippingToman',this.value)" onblur="formatFinalCell(${i},'shippingToman',this)"></td>
       <td><input class="num date-input" type="date" value="${escapeHtml(r.buyDateRow)}" oninput="updateCell(${i},'buyDateRow',this.value)" title="تاریخ"></td>
-      <td><input class="num date-input" type="date" value="${escapeHtml(r.sendDateRow)}" oninput="updateCell(${i},'sendDateRow',this.value)" title="تاریخ"></td>
       <td><input class="num control-toman-input" type="text" inputmode="decimal" value="${escapeHtml(r.controlToman||'')}" oninput="formatLiveInput(this);updateCell(${i},'controlToman',this.value)" onblur="formatFinalCell(${i},'controlToman',this)"></td>
       <td><span id="controlLira_${i}" class="calc-cell control-lira-output">${controlLiraText(r)}</span></td>
       <td><span id="controlPercent_${i}" class="calc-cell">${controlPercentText(r)}</span></td>
@@ -2046,11 +2049,13 @@ function calculate(){
 
     const pa=document.getElementById("profitAmount_"+i);
     const bp=document.getElementById("buyPlusProfit_"+i);
+    const fbt=document.getElementById("finalBuyTo_"+i);
     const cl=document.getElementById("controlLira_"+i);
     const cp=document.getElementById("controlPercent_"+i);
 
     if(pa)pa.textContent=moneyLira(Math.round(profitAmount));
     if(bp)bp.textContent=moneyLira(Math.round(rowFinal));
+    if(fbt)fbt.textContent=moneyToman(rowFinal*rate);
     if(cl)cl.textContent=controlLiraText(r);
     if(cp)cp.textContent=controlPercentText(r);
   }
@@ -2086,6 +2091,10 @@ function calculate(){
   document.getElementById("sumBuy").textContent=moneyLira(Math.round(sumBuy));
   document.getElementById("sumProfit").textContent=moneyLira(Math.round(sumProfit));
   document.getElementById("sumBuyPlusProfit").textContent=moneyLira(Math.round(sumRowFinal));
+  const sumFinalBuyTo=document.getElementById("sumFinalBuyTo");
+  if(sumFinalBuyTo)sumFinalBuyTo.textContent=moneyToman(sumRowFinal*rate);
+  const sumFinalBuyTo2=document.getElementById("sumFinalBuyTo2");
+  if(sumFinalBuyTo2)sumFinalBuyTo2.textContent=moneyToman(sumRowFinal*rate);
   document.getElementById("sumPickupLira").textContent=moneyLira(Math.round(sumPickupLira));
   document.getElementById("sumBuyTo").textContent=moneyToman(sumBuy*rate);
   document.getElementById("sumProfitTo").textContent=moneyToman(sumProfit*rate);
@@ -2416,7 +2425,7 @@ function auditInvoiceCell(td){
     const shippingLira=rate>0?shippingTo/rate:0;
 
     // column index:
-    // 0 add, 1 row, 2 product, 3 buy, 4 percent, 5 profit, 6 final, 7 pickup, 8 shipping, 9 buyDate, 10 sendDate, 11 controlToman, 12 controlLira, 13 controlPercent, 14 delete
+    // 0 add, 1 row, 2 product, 3 buy, 4 percent, 5 profit, 6 final, 7 finalToToman, 8 pickup, 9 shipping, 10 buyDate, 11 controlToman, 12 controlLira, 13 controlPercent, 14 delete
     if(col===0){
       panelText("افزودن ردیف: با این دکمه یک ردیف خالی دقیقاً بعد از همین ردیف اضافه می‌شود و شماره‌ها دوباره مرتب می‌شوند.");
     }else if(col===3){
@@ -2431,11 +2440,14 @@ function auditInvoiceCell(td){
       markInvoice(rowIndex,[6], "audit-target");
       panelText(`مبلغ سود از قیمت خرید و درصد همین ردیف می‌آید: ${fmt(buy)} × ${fmt(percent)} ÷ 100 = ${fmt(profit)} لیر.`);
     }else if(col===6){
-      markInvoice(rowIndex,[3,5], "audit-source");
+      markInvoice(rowIndex,[3,5,7], "audit-target");
       panelText(`قیمت نهایی ردیف = قیمت خرید + مبلغ سود = ${fmt(buy)} + ${fmt(profit)} = ${fmt(rowFinal)} لیر. هزینه دریافت و هزینه ارسال داخل این خانه نیست.`);
     }else if(col===7){
-      panelText(`هزینه دریافت (پیک) = ${fmt(pickupLira)} لیر. به جمع کل فاکتور و معادل تومان اضافه می‌شود اما در درصد سود ردیف وارد نمی‌شود.`);
+      markInvoice(rowIndex,[6], "audit-source");
+      panelText(`قیمت خرید به تومان = قیمت نهایی ردیف × قیمت هر 1 لیر به تومان = ${fmt(rowFinal)} × ${fmt(rate)} = ${moneyToman(rowFinal*rate)} تومان.`);
     }else if(col===8){
+      panelText(`هزینه دریافت (پیک) = ${fmt(pickupLira)} لیر. به جمع کل فاکتور و معادل تومان اضافه می‌شود اما در درصد سود ردیف وارد نمی‌شود.`);
+    }else if(col===9){
       panelText(`هزینه ارسال تومان = ${fmt(shippingTo)}. تبدیل آن به لیر: ${fmt(shippingTo)} ÷ ${fmt(rate)} = ${fmt(shippingLira)} لیر. فقط در جمع کل پرداخت اضافه می‌شود، نه در سود ردیف.`);
     }else if(col===11){
       panelText("تومان کنترل: خانه کنترل دستی است و در محاسبه اتوماتیک اثر ندارد.");
